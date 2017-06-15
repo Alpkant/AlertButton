@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Alert Button</string>
     <string name="add_person">Add trusty person</string>
+    <string name="list_people">See all trusty people</string>
+    <string name="title_activity_list">ListActivity</string>
 </resources>
