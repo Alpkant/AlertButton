@@ -35,6 +35,7 @@ public class AddActivity extends AppCompatActivity {
         add_button = (Button) findViewById(R.id.add_button);
         trustedPeople = new ArrayList<>();
 
+
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         int numberOfPeople = preferences.getInt("Number",0);
