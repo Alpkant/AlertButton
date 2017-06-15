@@ -3,4 +3,15 @@
     <string name="add_person">Add trusty person</string>
     <string name="list_people">See all trusty people</string>
     <string name="title_activity_list">ListActivity</string>
+    <string name="name_hint">John</string>
+    <string name="surname_hint">Doe</string>
+    <string name="surname">Surname :</string>
+    <string name="name">Name :</string>
+    <string name="phone_number">Phone Number :</string>
+    <string name="e_mail">E-mail :</string>
+    <string name="email_hint">johndoe@nomail.com</string>
+    <string name="add_as_person">Add as a trusted person</string>
+    <string name="select_from_contact">Select from contact</string>
+
+
 </resources>
