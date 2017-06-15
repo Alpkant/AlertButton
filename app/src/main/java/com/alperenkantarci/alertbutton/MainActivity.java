@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        add_button = (Button) findViewById(R.id.add_button);
+        add_button = (Button) findViewById(R.id.main_add_button);
         list_button = (Button) findViewById(R.id.list_button);
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
