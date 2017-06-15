@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         list_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent new_activity = new Intent( getApplicationContext() , AddActivity.class);
+                Intent new_activity = new Intent( getApplicationContext() , ListActivity.class);
                 startActivity(new_activity);
             }
         });
