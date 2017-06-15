@@ -1,5 +1,7 @@
 package com.alperenkantarci.alertbutton;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,6 +35,21 @@ public class AddActivity extends AppCompatActivity {
         add_button = (Button) findViewById(R.id.add_button);
         trustedPeople = new ArrayList<>();
 
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        int numberOfPeople = preferences.getInt("Number",0);
+        for ( int i=0 ; i < numberOfPeople ; i++){
+            String name= preferences.getString(String.valueOf(i)+" name","");
+            String surname= preferences.getString(String.valueOf(i)+" surname","");
+            String countryCode= preferences.getString(String.valueOf(i)+" country","");
+            String phoneNumber= preferences.getString(String.valueOf(i)+" number","");
+            String email= preferences.getString(String.valueOf(i)+" email","");
+            trustedPeople.add(new TrustyPerson(name,surname,countryCode,phoneNumber,email));
+        }
+        editor.clear();
+        editor.apply();
+
+
         String[] m_Codes= getResources().getStringArray(R.array.CountryCodes);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,m_Codes);
         country_codes.setAdapter(spinnerAdapter);
@@ -41,6 +58,16 @@ public class AddActivity extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (name.getText().toString().equals("")){
+                    Toast.makeText(AddActivity.this, "Name can't be empty.Please enter a name.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if (surname.getText().toString().equals("")){
+                    Toast.makeText(AddActivity.this, "Surname can't be empty.Please enter a surname.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if (!phoneNumber.getText().toString().equals("") || !email.getText().toString().equals("") ){
+                    Toast.makeText(AddActivity.this, "Either email or phone number should be given in order to add a person.", Toast.LENGTH_SHORT).show();
+                }
 
                 TrustyPerson newPerson = new TrustyPerson();
                 newPerson.setName(name.getText().toString());
@@ -57,7 +84,6 @@ public class AddActivity extends AppCompatActivity {
                 email.setText("");
 
 
-
             }
         });
 
@@ -65,4 +91,41 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.putInt("Number",trustedPeople.size());
+        for ( int i=0 ; i < trustedPeople.size() ; i++){
+            editor.putString(String.valueOf(i)+" name",trustedPeople.get(i).getName());
+            editor.putString(String.valueOf(i)+" surname",trustedPeople.get(i).getSurname());
+            editor.putString(String.valueOf(i)+" country",trustedPeople.get(i).getCountry_code());
+            editor.putString(String.valueOf(i)+" number",trustedPeople.get(i).getTelephone_number());
+            editor.putString(String.valueOf(i)+" email",trustedPeople.get(i).getEmail());
+        }
+        editor.apply();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.putInt("Number",trustedPeople.size());
+        for ( int i=0 ; i < trustedPeople.size() ; i++){
+            editor.putString(String.valueOf(i)+" name",trustedPeople.get(i).getName());
+            editor.putString(String.valueOf(i)+" surname",trustedPeople.get(i).getSurname());
+            editor.putString(String.valueOf(i)+" country",trustedPeople.get(i).getCountry_code());
+            editor.putString(String.valueOf(i)+" number",trustedPeople.get(i).getTelephone_number());
+            editor.putString(String.valueOf(i)+" email",trustedPeople.get(i).getEmail());
+        }
+        editor.apply();
+
+    }
 }

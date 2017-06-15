@@ -11,6 +11,18 @@ public class TrustyPerson {
     private String telephone_number;
     private String email;
 
+    public TrustyPerson(String name , String surname, String country_code, String telephone_number, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.country_code = country_code;
+        this.telephone_number = telephone_number;
+        this.email = email;
+    }
+
+    public TrustyPerson() {
+
+    }
+
     public String getName() {
         return name;
     }
