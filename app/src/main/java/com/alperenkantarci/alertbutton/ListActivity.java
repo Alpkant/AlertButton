@@ -25,6 +25,7 @@ public class ListActivity extends AppCompatActivity {
 
     List<TrustyPerson> trustedPeople;
     ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +42,15 @@ public class ListActivity extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
-        int numberOfPeople = preferences.getInt("Number",0);
-        for ( int i=0 ; i < numberOfPeople ; i++){
-            String name= preferences.getString(String.valueOf(i)+" name","");
-            String surname= preferences.getString(String.valueOf(i)+" surname","");
-            String countryCode= preferences.getString(String.valueOf(i)+" country","");
-            String phoneNumber= preferences.getString(String.valueOf(i)+" number","");
-            String email= preferences.getString(String.valueOf(i)+" email","");
-            trustedPeople.add(new TrustyPerson(name,surname,countryCode,phoneNumber,email));
+        int numberOfPeople = preferences.getInt("Number", 0);
+        for (int i = 0; i < numberOfPeople; i++) {
+            String name = preferences.getString(String.valueOf(i) + " name", "");
+            String surname = preferences.getString(String.valueOf(i) + " surname", "");
+            String countryCode = preferences.getString(String.valueOf(i) + " country", "");
+            String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
+            String email = preferences.getString(String.valueOf(i) + " email", "");
+            trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
         }
-
 
 
         listView = (ListView) findViewById(R.id.listView);

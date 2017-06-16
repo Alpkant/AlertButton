@@ -15,15 +15,15 @@ import java.util.List;
  * Created by Alperen Kantarci on 16.06.2017.
  */
 
-public class ViewAdapter extends BaseAdapter{
+public class ViewAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<TrustyPerson> mTrustedPeople;
 
-     public ViewAdapter(Activity activity , List<TrustyPerson> trustedPeople){
-         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public ViewAdapter(Activity activity, List<TrustyPerson> trustedPeople) {
+        mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mTrustedPeople = trustedPeople;
-     }
+    }
 
     @Override
     public int getCount() {

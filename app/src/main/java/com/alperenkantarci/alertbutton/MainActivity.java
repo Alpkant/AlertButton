@@ -12,8 +12,9 @@ public class MainActivity extends AppCompatActivity {
     Button add_button;
     Button list_button;
     ImageView alarm_button;
+
     @Override
-    protected void onCreate(final Bundle savedInstanceState){
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         add_button = (Button) findViewById(R.id.main_add_button);
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent new_activity = new Intent( getApplicationContext() , AddActivity.class);
+                Intent new_activity = new Intent(getApplicationContext(), AddActivity.class);
                 startActivity(new_activity);
             }
         });
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         list_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent new_activity = new Intent( getApplicationContext() , ListActivity.class);
+                Intent new_activity = new Intent(getApplicationContext(), ListActivity.class);
                 startActivity(new_activity);
             }
         });
