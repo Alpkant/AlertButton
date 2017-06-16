@@ -95,7 +95,6 @@ public class AddActivity extends AppCompatActivity {
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
-                Toast.makeText(getApplicationContext(), String.valueOf(trustedPeople.size()), Toast.LENGTH_SHORT).show();
                 editor.putInt("Number", trustedPeople.size());
                 int i = trustedPeople.size() - 1;
                 editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
