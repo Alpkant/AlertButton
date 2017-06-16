@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,12 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_person);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
 
         name = (EditText) findViewById(R.id.name_edit_text);
         surname = (EditText) findViewById(R.id.surname_edit_text);
@@ -54,7 +61,9 @@ public class AddActivity extends AppCompatActivity {
         }
         editor.apply();
 
-
+        /**
+         * Array adapter setting.
+         */
         String[] m_Codes = getResources().getStringArray(R.array.CountryCodes);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, m_Codes);
         country_codes.setAdapter(spinnerAdapter);
