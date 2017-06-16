@@ -26,6 +26,7 @@ public class ListActivity extends AppCompatActivity {
 
     List<TrustyPerson> trustedPeople;
     ListView listView;
+    TextView empty_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class ListActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         trustedPeople = new ArrayList<>();
-
+        empty_list = (TextView) findViewById(R.id.empty_view);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
@@ -53,6 +54,8 @@ public class ListActivity extends AppCompatActivity {
             trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
         }
 
+        if (trustedPeople.size() == 0)
+            empty_list.setText(R.string.empty_list_error);
 
         listView = (ListView) findViewById(R.id.listView);
         ViewAdapter adapter = new ViewAdapter(this, trustedPeople);
