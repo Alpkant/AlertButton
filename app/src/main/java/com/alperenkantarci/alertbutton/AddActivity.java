@@ -3,6 +3,7 @@ package com.alperenkantarci.alertbutton;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -36,7 +37,7 @@ public class AddActivity extends AppCompatActivity {
         trustedPeople = new ArrayList<>();
 
 
-        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         int numberOfPeople = preferences.getInt("Number", 0);
         for (int i = 0; i < numberOfPeople; i++) {
@@ -66,8 +67,9 @@ public class AddActivity extends AppCompatActivity {
                 } else if (surname.getText().toString().equals("")) {
                     Toast.makeText(AddActivity.this, "Surname can't be empty.Please enter a surname.", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!phoneNumber.getText().toString().equals("") || !email.getText().toString().equals("")) {
+                } else if (phoneNumber.getText().toString().equals("") && email.getText().toString().equals("")) {
                     Toast.makeText(AddActivity.this, "Either email or phone number should be given in order to add a person.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 TrustyPerson newPerson = new TrustyPerson();
@@ -77,6 +79,22 @@ public class AddActivity extends AppCompatActivity {
                 newPerson.setTelephone_number(phoneNumber.getText().toString());
                 newPerson.setEmail(email.getText().toString());
                 trustedPeople.add(newPerson);
+
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                Toast.makeText(getApplicationContext(), String.valueOf(trustedPeople.size()), Toast.LENGTH_SHORT).show();
+                editor.putInt("Number", trustedPeople.size());
+                int i= trustedPeople.size()-1;
+                    editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
+                    editor.putString(String.valueOf(i) + " surname", trustedPeople.get(i).getSurname());
+                    editor.putString(String.valueOf(i) + " country", trustedPeople.get(i).getCountry_code());
+                    editor.putString(String.valueOf(i) + " number", trustedPeople.get(i).getTelephone_number());
+                    editor.putString(String.valueOf(i) + " email", trustedPeople.get(i).getEmail());
+
+                editor.apply();
+
+
                 Toast.makeText(AddActivity.this, "Person successfully added to your list.\n" +
                         "If you want to add new person fill the field.", Toast.LENGTH_LONG).show();
                 name.setText("");
@@ -91,41 +109,7 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
 
-        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.putInt("Number", trustedPeople.size());
-        for (int i = 0; i < trustedPeople.size(); i++) {
-            editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
-            editor.putString(String.valueOf(i) + " surname", trustedPeople.get(i).getSurname());
-            editor.putString(String.valueOf(i) + " country", trustedPeople.get(i).getCountry_code());
-            editor.putString(String.valueOf(i) + " number", trustedPeople.get(i).getTelephone_number());
-            editor.putString(String.valueOf(i) + " email", trustedPeople.get(i).getEmail());
-        }
-        editor.apply();
 
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.putInt("Number", trustedPeople.size());
-        for (int i = 0; i < trustedPeople.size(); i++) {
-            editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
-            editor.putString(String.valueOf(i) + " surname", trustedPeople.get(i).getSurname());
-            editor.putString(String.valueOf(i) + " country", trustedPeople.get(i).getCountry_code());
-            editor.putString(String.valueOf(i) + " number", trustedPeople.get(i).getTelephone_number());
-            editor.putString(String.valueOf(i) + " email", trustedPeople.get(i).getEmail());
-        }
-        editor.apply();
-
-    }
 }

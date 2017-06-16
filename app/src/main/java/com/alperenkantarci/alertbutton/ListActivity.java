@@ -3,12 +3,15 @@ package com.alperenkantarci.alertbutton;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +29,10 @@ public class ListActivity extends AppCompatActivity {
 
         trustedPeople = new ArrayList<>();
 
-        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         int numberOfPeople = preferences.getInt("Number",0);
+        Toast.makeText(this, String.valueOf(numberOfPeople ), Toast.LENGTH_SHORT).show();
         for ( int i=0 ; i < numberOfPeople ; i++){
             String name= preferences.getString(String.valueOf(i)+" name","");
             String surname= preferences.getString(String.valueOf(i)+" surname","");
@@ -40,7 +44,8 @@ public class ListActivity extends AppCompatActivity {
         editor.apply();
 
         listView = (ListView) findViewById(R.id.listView);
-
+        ViewAdapter adapter = new ViewAdapter(this, trustedPeople);
+        listView.setAdapter(adapter);
     }
 
 }
