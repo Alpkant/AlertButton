@@ -23,7 +23,8 @@
         android:textSize="20sp"
         tools:text="Phone Number" />
 
-    <ImageButton
+    <ImageView
+        android:id="@+id/delete_image"
         android:layout_width="30dp"
         android:layout_height="24dp"
         android:layout_marginEnd="8dp"
