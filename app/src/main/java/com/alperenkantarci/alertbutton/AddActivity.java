@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,6 +37,9 @@ public class AddActivity extends AppCompatActivity {
         add_button = (Button) findViewById(R.id.add_button);
         trustedPeople = new ArrayList<>();
 
+        /**
+         * This part retrieve all saved persons from shared preferences.
+         */
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
@@ -48,7 +52,6 @@ public class AddActivity extends AppCompatActivity {
             String email = preferences.getString(String.valueOf(i) + " email", "");
             trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
         }
-        editor.clear();
         editor.apply();
 
 
@@ -85,13 +88,12 @@ public class AddActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 Toast.makeText(getApplicationContext(), String.valueOf(trustedPeople.size()), Toast.LENGTH_SHORT).show();
                 editor.putInt("Number", trustedPeople.size());
-                int i= trustedPeople.size()-1;
-                    editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
-                    editor.putString(String.valueOf(i) + " surname", trustedPeople.get(i).getSurname());
-                    editor.putString(String.valueOf(i) + " country", trustedPeople.get(i).getCountry_code());
-                    editor.putString(String.valueOf(i) + " number", trustedPeople.get(i).getTelephone_number());
-                    editor.putString(String.valueOf(i) + " email", trustedPeople.get(i).getEmail());
-
+                int i = trustedPeople.size() - 1;
+                editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
+                editor.putString(String.valueOf(i) + " surname", trustedPeople.get(i).getSurname());
+                editor.putString(String.valueOf(i) + " country", trustedPeople.get(i).getCountry_code());
+                editor.putString(String.valueOf(i) + " number", trustedPeople.get(i).getTelephone_number());
+                editor.putString(String.valueOf(i) + " email", trustedPeople.get(i).getEmail());
                 editor.apply();
 
 
@@ -108,8 +110,6 @@ public class AddActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
 }

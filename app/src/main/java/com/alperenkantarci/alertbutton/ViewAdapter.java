@@ -52,7 +52,7 @@ public class ViewAdapter extends BaseAdapter{
         TrustyPerson tmpPerson = mTrustedPeople.get(i);
 
         textView1.setText(tmpPerson.getName() + " " + tmpPerson.getSurname());
-        String[] tmp = tmpPerson.getCountry_code().split(",");
+        String[] tmp = tmpPerson.getCountry_code().split(","); //Gets only phone part
         textView2.setText(tmp[0] + "" + tmpPerson.getTelephone_number());
         return rowView;
     }

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static android.os.Build.VERSION_CODES.M;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -29,19 +31,21 @@ public class ListActivity extends AppCompatActivity {
 
         trustedPeople = new ArrayList<>();
 
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         int numberOfPeople = preferences.getInt("Number",0);
-        Toast.makeText(this, String.valueOf(numberOfPeople ), Toast.LENGTH_SHORT).show();
         for ( int i=0 ; i < numberOfPeople ; i++){
             String name= preferences.getString(String.valueOf(i)+" name","");
             String surname= preferences.getString(String.valueOf(i)+" surname","");
             String countryCode= preferences.getString(String.valueOf(i)+" country","");
             String phoneNumber= preferences.getString(String.valueOf(i)+" number","");
             String email= preferences.getString(String.valueOf(i)+" email","");
+            Toast.makeText(this, name  + " "+ surname , Toast.LENGTH_SHORT).show();
             trustedPeople.add(new TrustyPerson(name,surname,countryCode,phoneNumber,email));
         }
-        editor.apply();
+
+
 
         listView = (ListView) findViewById(R.id.listView);
         ViewAdapter adapter = new ViewAdapter(this, trustedPeople);
