@@ -231,4 +231,5 @@
     <string name="surname_hint">Doe</string>
 
     <string name="title_activity_list">ListActivity</string>
+    <string name="empty_list">You have no trusted person.Please add in order to see and alert them.</string>
 </resources>
