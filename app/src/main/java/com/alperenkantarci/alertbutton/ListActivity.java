@@ -41,7 +41,6 @@ public class ListActivity extends AppCompatActivity {
             String countryCode= preferences.getString(String.valueOf(i)+" country","");
             String phoneNumber= preferences.getString(String.valueOf(i)+" number","");
             String email= preferences.getString(String.valueOf(i)+" email","");
-            Toast.makeText(this, name  + " "+ surname , Toast.LENGTH_SHORT).show();
             trustedPeople.add(new TrustyPerson(name,surname,countryCode,phoneNumber,email));
         }
 

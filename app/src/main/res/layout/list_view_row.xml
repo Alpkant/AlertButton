@@ -7,10 +7,12 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:layout_marginStart="8dp"
         android:id="@+id/textView1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="5"
+        android:textSize="20sp"
         tools:text = "Name Surname"/>
 
     <TextView
@@ -18,11 +20,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="5"
+        android:textSize="20sp"
         tools:text="Phone Number" />
 
     <ImageButton
         android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
         app:srcCompat="@android:drawable/ic_delete" />
 
 </LinearLayout>
