@@ -35,6 +35,9 @@ public class AddActivity extends AppCompatActivity {
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
+        /**
+         * This can produce NULLException
+         */
 
         name = (EditText) findViewById(R.id.name_edit_text);
         surname = (EditText) findViewById(R.id.surname_edit_text);
