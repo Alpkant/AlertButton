@@ -20,14 +20,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity {
     Button add_button;
     Button list_button;
     ImageView alarm_button;
-    private FusedLocationProviderClient mFusedLocationClient;
+    FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,9 +69,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: ADD LOCATION PROVIDER PROPERLY
+
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+
+                    Toast.makeText(MainActivity.this, "BAŞARISIZ", Toast.LENGTH_SHORT).show();
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                mFusedLocationClient.getLastLocation().addOnSuccessListener(getParent(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        Toast.makeText(MainActivity.this, "LOOOOOOOOOL", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+
+
+
+
+
 
 
             }
@@ -74,4 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+
 }
