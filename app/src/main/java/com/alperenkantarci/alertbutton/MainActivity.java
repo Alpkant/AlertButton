@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
+        }else {
+            Log.i("PERMISSION ERROR","PERMISSION ERROR");
+            return;
         }
 
         mFusedLocationClient.getLastLocation()
