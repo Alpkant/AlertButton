@@ -66,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
         list_button = (Button) findViewById(R.id.list_button);
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+            // TODO (2) : Consider calling
+
+            ActivityCompat.requestPermissions( this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+
+
+        }
+
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,28 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        // TODO: ADD LOCATION PROVIDER PROPERLY
+        // TODO (1): ADD LOCATION PROVIDER PROPERLY
 
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                    // TODO: Consider calling
-
-                    ActivityCompat.requestPermissions(getParent(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-
-
-                }
-
-
-
-
-
-
-
-
 
 
             }
