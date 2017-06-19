@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.i("ASDFSADsa","SADFDSAFAFDS");
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.i("ASDFSADsa", "SADFDSAFAFDS");
 
         }
     }
@@ -66,13 +66,21 @@ public class MainActivity extends AppCompatActivity {
         list_button = (Button) findViewById(R.id.list_button);
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-            // TODO (2) : Consider calling
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions( this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
         }
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            Toast.makeText(MainActivity.this, "LOOOOOOOOL", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,23 +99,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         // TODO (1): ADD LOCATION PROVIDER PROPERLY
 
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
             }
 
 
         });
-    }
-
-    private void requestPermissions(Context applicationContext, String[] strings, int i) {
-
-
     }
 
 
