@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     Button list_button;
     ImageView alarm_button;
     FusedLocationProviderClient mFusedLocationClient;
+    double longitude,latitude,time;
+    float speed,accuracy;
 
 
     @Override
@@ -72,12 +74,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-                            Toast.makeText(MainActivity.this, "LOOOOOOOOL", Toast.LENGTH_SHORT).show();
+
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            time = location.getTime();
+                            speed = location.getSpeed();
+                            accuracy= location.getAccuracy();
+
+                            Log.i("Longitude", String.valueOf(longitude));
+                            Log.i("Latitude", String.valueOf(latitude));
+                            Log.i("Time", String.valueOf(time));
+                            Log.i("Speed", String.valueOf(accuracy));
                         }
                     }
                 });
