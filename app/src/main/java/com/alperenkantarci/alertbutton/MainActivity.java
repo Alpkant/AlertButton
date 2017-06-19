@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
@@ -29,6 +31,12 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import static android.R.id.list;
 
 public class MainActivity extends AppCompatActivity {
     Button add_button;
@@ -87,10 +95,13 @@ public class MainActivity extends AppCompatActivity {
                             speed = location.getSpeed();
                             accuracy= location.getAccuracy();
 
+
                             Log.i("Longitude", String.valueOf(longitude));
                             Log.i("Latitude", String.valueOf(latitude));
                             Log.i("Time", String.valueOf(time));
-                            Log.i("Speed", String.valueOf(accuracy));
+                            Log.i("Speed", String.valueOf(speed));
+
+                            findAdress(latitude,longitude);
                         }
                     }
                 });
@@ -122,6 +133,38 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+    }
+
+    public void findAdress(double latitude , double longitude) {
+
+        Geocoder geocoder = new Geocoder(MainActivity.this, Locale.US);
+        List<Address> listOfAddress;
+        try {
+            listOfAddress = geocoder.getFromLocation(latitude, longitude, 1);
+            if (listOfAddress != null && !listOfAddress.isEmpty()) {
+                Address address = listOfAddress.get(0);
+
+                String country = address.getCountryCode();
+                String adminArea = address.getAdminArea();
+                String locality = address.getLocality();
+                String feautureName = address.getFeatureName();
+                String addressLine = address.getAddressLine(1);
+
+                try {
+
+                    Log.i("Country",country);
+                    Log.i("adminArea",adminArea);
+                    Log.i("Locality",locality);
+                    Log.i("FeautureName",feautureName);
+                    Log.i("AddressLine",addressLine);
+                }catch (NullPointerException e){
+                    Log.i("NULL","NULL");
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
