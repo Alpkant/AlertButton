@@ -1,6 +1,7 @@
 package com.alperenkantarci.alertbutton;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,6 +46,33 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void getTheLocationInfo(Activity activity) {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            time = location.getTime();
+                            speed = location.getSpeed();
+                            accuracy = location.getAccuracy();
+
+
+                            Log.i("Longitude", String.valueOf(longitude));
+                            Log.i("Latitude", String.valueOf(latitude));
+                            Log.i("Time", String.valueOf(time));
+                            Log.i("Speed", String.valueOf(speed));
+
+                            findAdress(latitude, longitude);
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,43 +82,6 @@ public class MainActivity extends AppCompatActivity {
         add_button = (Button) findViewById(R.id.main_add_button);
         list_button = (Button) findViewById(R.id.list_button);
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (checkLocationPermission()) {
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-
-                    //Request location updates:
-                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-                    mFusedLocationClient.getLastLocation()
-                            .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                                @Override
-                                public void onSuccess(Location location) {
-                                    if (location != null) {
-
-                                        longitude = location.getLongitude();
-                                        latitude = location.getLatitude();
-                                        time = location.getTime();
-                                        speed = location.getSpeed();
-                                        accuracy = location.getAccuracy();
-
-
-                                        Log.i("Longitude", String.valueOf(longitude));
-                                        Log.i("Latitude", String.valueOf(latitude));
-                                        Log.i("Time", String.valueOf(time));
-                                        Log.i("Speed", String.valueOf(speed));
-
-                                        findAdress(latitude, longitude);
-                                    }
-                                }
-                            });
-
-                }
-            }
-
-        }
 
 
         add_button.setOnClickListener(new View.OnClickListener() {
@@ -110,12 +101,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // TODO (1): ADD LOCATION PROVIDER PROPERLY
-
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
+                    if (checkLocationPermission()) {
+                        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                                Manifest.permission.ACCESS_FINE_LOCATION)
+                                == PackageManager.PERMISSION_GRANTED) {
+
+                            //Request location updates:
+                            getTheLocationInfo(MainActivity.this);
+
+                        }
+                    }
+
+                }
             }
 
 
@@ -185,8 +187,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        1);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
             return false;
         } else {
@@ -210,31 +211,7 @@ public class MainActivity extends AppCompatActivity {
                             == PackageManager.PERMISSION_GRANTED) {
 
                         //Request location updates:
-
-                        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-                        mFusedLocationClient.getLastLocation()
-                                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                                    @Override
-                                    public void onSuccess(Location location) {
-                                        if (location != null) {
-
-                                            longitude = location.getLongitude();
-                                            latitude = location.getLatitude();
-                                            time = location.getTime();
-                                            speed = location.getSpeed();
-                                            accuracy = location.getAccuracy();
-
-
-                                            Log.i("Longitude", String.valueOf(longitude));
-                                            Log.i("Latitude", String.valueOf(latitude));
-                                            Log.i("Time", String.valueOf(time));
-                                            Log.i("Speed", String.valueOf(speed));
-
-                                            findAdress(latitude, longitude);
-                                        }
-                                    }
-                                });
+                        getTheLocationInfo(this);
 
                     }
 
