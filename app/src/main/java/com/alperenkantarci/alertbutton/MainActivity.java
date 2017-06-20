@@ -123,22 +123,30 @@ public class MainActivity extends AppCompatActivity {
                             //Request location updates:
                             getTheLocationInfo(MainActivity.this);
 
+                            if(checkInternetPermission()){
+                                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                                        Manifest.permission.INTERNET)
+                                        == PackageManager.PERMISSION_GRANTED){
+
+                                    try {
+                                        GMailSender sender = new GMailSender("alperenkantarci@gmail.com", "Alpbeysubuka4");
+                                        sender.sendMail("This is Subject",
+                                                "This is Body",
+                                                "alperenkantarci@gmail.com",
+                                                "alperenkantarci@gmail.com");
+                                        Log.e("SendMail", "SUCCESS");
+                                    } catch (Exception e) {
+                                        Log.e("SendMail", e.getMessage(), e);
+                                    }
+
+
+                                }
+                            }
 
 
 
 
 
-
-                                        try {
-                                            GMailSender sender = new GMailSender("alperenkantarci@gmail.com", "Alpbeysubuka4");
-                                            sender.sendMail("This is Subject",
-                                                    "This is Body",
-                                                    "alperenkantarci@gmail.com",
-                                                    "alperenkantarci@gmail.com");
-                                            Log.e("SendMail", "SUCCESS");
-                                        } catch (Exception e) {
-                                            Log.e("SendMail", e.getMessage(), e);
-                                        }
 
 
 
@@ -291,6 +299,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean checkInternetPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.INTERNET)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("We need internet permission")
+                        .setMessage("In order to use the app please give permission.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.INTERNET},
+                                        3);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.INTERNET}, 3);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -333,6 +380,32 @@ public class MainActivity extends AppCompatActivity {
 
                         //Request location updates:
                        // getTheLocationInfo(this);
+
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+
+            }
+
+            case 3:  {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.INTERNET)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        //Request location updates:
+                        // getTheLocationInfo(this);
 
                     }
 
