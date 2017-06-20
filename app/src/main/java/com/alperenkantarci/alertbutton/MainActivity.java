@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.i("Speed", String.valueOf(speed));
 
                             findAdress(latitude, longitude);
+
                         }
                     }
                 });
@@ -120,8 +122,21 @@ public class MainActivity extends AppCompatActivity {
 
                             //Request location updates:
                             getTheLocationInfo(MainActivity.this);
+                            try{
 
 
+                            if (lastLocation.getLatitude() != 0){
+                                Log.i("SMS SUCCESS","SUCCESS");
+                                SmsManager smsManager = SmsManager.getDefault();
+                                short text = Short.parseShort(String.valueOf(Integer.valueOf(String.valueOf(lastLocation.getSpeed()))));
+                                smsManager.sendDataMessage("05063014341",null,text,null,null,null);
+                            }else{
+                                Log.i("SMS FAIL","FAIL");
+                            }
+                            }
+                            catch (NullPointerException e){
+                                Log.i("NULL","NULL");
+                            }
                         }
                     }
 
@@ -156,10 +171,10 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("AddressLine", addressLine);
 
                     lastLocation.setCountry(country);
-                    lastLocation.setCountryCode(adminArea);
+                    lastLocation.setAdminArea(adminArea);
+                    lastLocation.setAdminArea(adminArea);
                     lastLocation.setAddress(addressLine);
 
-                    Toast.makeText(MainActivity.this, lastLocation.getCountry(), Toast.LENGTH_SHORT).show();
 
                 } catch (NullPointerException e) {
                     Log.i("NULL", "NULL");

@@ -11,7 +11,7 @@ public class LocationDetails {
     private float speed;
     private float accuracy;
     private String country;
-    private String countryCode;
+    private String adminArea;
     private String Address;
 
     public LocationDetails(double longitude, double latitude) {
@@ -67,12 +67,12 @@ public class LocationDetails {
         this.country = country;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public String getAdminArea() {
+        return adminArea;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setAdminArea(String adminArea) {
+        this.adminArea = adminArea;
     }
 
     public String getAddress() {
