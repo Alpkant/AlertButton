@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             speed = location.getSpeed();
                             accuracy = location.getAccuracy();
 
-                            lastLocation = new LocationDetails(longitude,latitude);
+                            lastLocation = new LocationDetails(longitude, latitude);
                             lastLocation.setTime(time);
                             lastLocation.setSpeed(speed);
                             lastLocation.setAccuracy(accuracy);
@@ -122,27 +122,35 @@ public class MainActivity extends AppCompatActivity {
 
                             //Request location updates:
                             getTheLocationInfo(MainActivity.this);
+
                             try{
 
+                                if (lastLocation.getLatitude() != 0) {
+                                    if (checkSMSPermission()) {
+                                        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                                                Manifest.permission.SEND_SMS)
+                                                == PackageManager.PERMISSION_GRANTED) {
+                                            try {
+                                                Log.i("SMS SUCCESS", "SUCCESS");
+                                                SmsManager smsManager = SmsManager.getDefault();
+                                                smsManager.sendTextMessage("05063014341", null, String.valueOf(lastLocation.getLatitude()), null, null);
+                                            } catch (NullPointerException e) {
+                                                Log.i("NULL", "NULL");
+                                            }
 
-                            if (lastLocation.getLatitude() != 0){
-                                Log.i("SMS SUCCESS","SUCCESS");
-                                SmsManager smsManager = SmsManager.getDefault();
-                                short text = Short.parseShort(String.valueOf(Integer.valueOf(String.valueOf(lastLocation.getSpeed()))));
-                                smsManager.sendDataMessage("05063014341",null,text,null,null,null);
-                            }else{
-                                Log.i("SMS FAIL","FAIL");
-                            }
-                            }
-                            catch (NullPointerException e){
+                                        }
+                                    }
+                                } else {
+                                    Log.i("SMS FAIL", "FAIL");
+                                }
+                            }catch (NullPointerException e){
                                 Log.i("NULL","NULL");
                             }
                         }
                     }
-
                 }
-            }
 
+            }
 
         });
     }
@@ -183,6 +191,44 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public boolean checkSMSPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("We need sms permission")
+                        .setMessage("In order to use the app please give permission.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.SEND_SMS},
+                                        2);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS}, 2);
+            }
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -252,6 +298,32 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 return;
+            }
+
+            case 2:  {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.SEND_SMS)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        //Request location updates:
+                       // getTheLocationInfo(this);
+
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+
             }
 
         }
