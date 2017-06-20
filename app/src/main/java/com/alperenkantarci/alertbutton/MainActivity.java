@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button add_button;
     Button list_button;
     ImageView alarm_button;
+    LocationDetails lastLocation;
     FusedLocationProviderClient mFusedLocationClient;
     double longitude, latitude, time;
     float speed, accuracy;
@@ -54,12 +56,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
-
                             longitude = location.getLongitude();
                             latitude = location.getLatitude();
                             time = location.getTime();
                             speed = location.getSpeed();
                             accuracy = location.getAccuracy();
+
+                            lastLocation = new LocationDetails(longitude,latitude);
+                            lastLocation.setTime(time);
+                            lastLocation.setSpeed(speed);
+                            lastLocation.setAccuracy(accuracy);
 
 
                             Log.i("Longitude", String.valueOf(longitude));
@@ -104,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                     if (checkLocationPermission()) {
@@ -113,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
                             //Request location updates:
                             getTheLocationInfo(MainActivity.this);
+
 
                         }
                     }
@@ -136,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 String country = address.getCountryCode();
                 String adminArea = address.getAdminArea();
                 String locality = address.getLocality();
-                String feautureName = address.getFeatureName();
+                String featureName = address.getFeatureName();
                 String addressLine = address.getAddressLine(1);
 
                 try {
@@ -144,8 +152,15 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("Country", country);
                     Log.i("adminArea", adminArea);
                     Log.i("Locality", locality);
-                    Log.i("FeautureName", feautureName);
+                    Log.i("FeatureName", featureName);
                     Log.i("AddressLine", addressLine);
+
+                    lastLocation.setCountry(country);
+                    lastLocation.setCountryCode(adminArea);
+                    lastLocation.setAddress(addressLine);
+
+                    Toast.makeText(MainActivity.this, lastLocation.getCountry(), Toast.LENGTH_SHORT).show();
+
                 } catch (NullPointerException e) {
                     Log.i("NULL", "NULL");
                 }
