@@ -1,5 +1,7 @@
 package com.alperenkantarci.alertbutton;
 
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,8 +67,10 @@ public class GMailSender extends javax.mail.Authenticator {
             else
                 message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
             Transport.send(message);
-        }catch(Exception e){
 
+            Log.e("BAŞARI","BAŞARI");
+        }catch(Exception e){
+            Log.e("HATA","HATA VAR");   // TODO (1) : THERE IS AN ERROR IN HERE
         }
     }
 

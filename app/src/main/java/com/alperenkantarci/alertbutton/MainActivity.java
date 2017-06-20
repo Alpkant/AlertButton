@@ -130,18 +130,19 @@ public class MainActivity extends AppCompatActivity {
 
 
                                         try {
-                                            GMailSender sender = new GMailSender("username@gmail.com", "password");
+                                            GMailSender sender = new GMailSender("alperenkantarci@gmail.com", "Alpbeysubuka4");
                                             sender.sendMail("This is Subject",
                                                     "This is Body",
-                                                    "user@gmail.com",
-                                                    "user@yahoo.com");
+                                                    "alperenkantarci@gmail.com",
+                                                    "alperenkantarci@gmail.com");
+                                            Log.e("SendMail", "SUCCESS");
                                         } catch (Exception e) {
                                             Log.e("SendMail", e.getMessage(), e);
                                         }
 
 
-                            
 
+                        /*
                             try{
 
                                 if (lastLocation.getLatitude() != 0) {
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }catch (NullPointerException e){
                                 Log.i("NULL","NULL");
-                            }
+                            } */
                         }
                     }
                 }
