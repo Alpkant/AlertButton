@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     try {
                                         GMailSender sender = new GMailSender("alperenkantarci@gmail.com", "Alpbeysubuka4");
-                                        sender.sendMail("This is Subject",
+                                        sender.sendMail("alperenkantarci@gmail.com",
                                                 "This is Body",
                                                 "alperenkantarci@gmail.com",
                                                 "alperenkantarci@gmail.com");

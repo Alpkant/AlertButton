@@ -70,6 +70,7 @@ public class GMailSender extends javax.mail.Authenticator {
 
             Log.e("BAŞARI","BAŞARI");
         }catch(Exception e){
+            Log.e("ERROR CODE ", e.getLocalizedMessage());
             Log.e("HATA","HATA VAR");   // TODO (1) : THERE IS AN ERROR IN HERE
         }
     }
