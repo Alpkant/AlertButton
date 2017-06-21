@@ -234,4 +234,6 @@
     <string name="empty_list">You have no trusted person.Please add in order to see and alert them.</string>
     <string name="settings">Settings</string>
     <string name="empty_list_error">You have no one to be alerted.Add trusted people in order to see them.</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
 </resources>
