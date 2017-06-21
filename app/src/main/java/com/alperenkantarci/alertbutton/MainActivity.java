@@ -14,20 +14,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -128,16 +127,11 @@ public class MainActivity extends AppCompatActivity {
                                         Manifest.permission.INTERNET)
                                         == PackageManager.PERMISSION_GRANTED){
 
-                                    try {
-                                        GMailSender sender = new GMailSender("alperenkantarci@gmail.com", "Alpbeysubuka4");
-                                        sender.sendMail("alperenkantarci@gmail.com",
-                                                "This is Body",
-                                                "alperenkantarci@gmail.com",
-                                                "alperenkantarci@gmail.com");
-                                        Log.e("SendMail", "SUCCESS");
-                                    } catch (Exception e) {
-                                        Log.e("SendMail", e.getMessage(), e);
-                                    }
+                                    List<String> alici_liste =new ArrayList<String>();
+                                    String alici = "alperenkantarci@gmail.com";
+                                    alici_liste.add(alici);
+                                    new SendMailTask(MainActivity.this).execute("alperenkantarci@gmail.com",
+                                            "Alpbeysubuka4",alici_liste,"DENEME","DENEME");
 
 
                                 }
