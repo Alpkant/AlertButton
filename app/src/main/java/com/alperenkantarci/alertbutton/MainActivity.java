@@ -4,21 +4,25 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,6 +36,8 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
+    List<TrustyPerson> trustedPeople;
+
     Button add_button;
     Button list_button;
     ImageView alarm_button;
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
     double longitude, latitude, time;
     float speed, accuracy;
+    String Username,Password;
 
 
     @Override
@@ -84,11 +91,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        trustedPeople = new ArrayList<>();
 
         add_button = (Button) findViewById(R.id.main_add_button);
         list_button = (Button) findViewById(R.id.list_button);
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        final int numberOfPeople = preferences.getInt("Number", 0);
+        for (int i = 0; i < numberOfPeople; i++) {
+            String name = preferences.getString(String.valueOf(i) + " name", "");
+            String surname = preferences.getString(String.valueOf(i) + " surname", "");
+            String countryCode = preferences.getString(String.valueOf(i) + " country", "");
+            String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
+            String email = preferences.getString(String.valueOf(i) + " email", "");
+            trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+        }
 
 
         add_button.setOnClickListener(new View.OnClickListener() {
@@ -122,14 +141,18 @@ public class MainActivity extends AppCompatActivity {
                             //Request location updates:
                             getTheLocationInfo(MainActivity.this);
 
+
                             if(checkInternetPermission()){
                                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                                         Manifest.permission.INTERNET)
                                         == PackageManager.PERMISSION_GRANTED){
 
+
                                     List<String> alici_liste =new ArrayList<String>();
-                                    String alici = "alperenkantarci@gmail.com";
-                                    alici_liste.add(alici);
+                                    for(int i=0 ; i < numberOfPeople ; i++){
+                                        alici_liste.add(trustedPeople.get(i).getEmail());
+                                    }
+
                                     new SendMailTask(MainActivity.this).execute("alperenkantarci@gmail.com",
                                             "Alpbeysubuka4",alici_liste,"DENEME","DENEME");
 
@@ -137,9 +160,28 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
 
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.layout.user_password_layout);
+                            final EditText username = new EditText(MainActivity.this);
+                            final EditText password = new EditText(MainActivity.this);
+                            alert.setTitle("Mail Verification");
+                            alert.setMessage("You need to enter your password in order to send mail.");
+                            alert.setView(R.layout.user_password_layout);
+                            alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Username = username.getText().toString();
+                                    Password = password.getText().toString();
 
 
+                                }
+                            });
 
+                            alert.setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                }
+                            });
+
+                            alert.show();
 
 
 
