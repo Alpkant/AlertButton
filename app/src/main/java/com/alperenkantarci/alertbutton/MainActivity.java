@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.alperenkantarci.alertbutton.R.id.username;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
     double longitude, latitude, time;
     float speed, accuracy;
-    String Username,Password;
+    String Username, Password;
 
 
     @Override
@@ -97,8 +100,16 @@ public class MainActivity extends AppCompatActivity {
         list_button = (Button) findViewById(R.id.list_button);
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = preferences.edit();
+
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences.Editor editor = preferences.edit();
+        final Boolean runBefore = preferences.getBoolean("RunBefore",false);
+        if (runBefore == false){
+
+            editor.putBoolean("RunBefore",true);
+            editor.apply();
+        }
+
         final int numberOfPeople = preferences.getInt("Number", 0);
         for (int i = 0; i < numberOfPeople; i++) {
             String name = preferences.getString(String.valueOf(i) + " name", "");
@@ -142,47 +153,60 @@ public class MainActivity extends AppCompatActivity {
                             getTheLocationInfo(MainActivity.this);
 
 
-                            if(checkInternetPermission()){
+                            if (checkInternetPermission()) {
                                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                                         Manifest.permission.INTERNET)
-                                        == PackageManager.PERMISSION_GRANTED){
+                                        == PackageManager.PERMISSION_GRANTED) {
 
+                                    if(!runBefore){
 
-                                    List<String> alici_liste =new ArrayList<String>();
-                                    for(int i=0 ; i < numberOfPeople ; i++){
+                                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.layout.user_password_layout);
+                                        final EditText username = new EditText(MainActivity.this);
+                                        final EditText password = new EditText(MainActivity.this);
+                                        alert.setTitle("Mail Verification");
+                                        alert.setMessage("You need to enter your password in order to send mail.");
+                                        alert.setView(R.layout.user_password_layout);
+
+                                        alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                Username = username.getText().toString();
+                                                Password = password.getText().toString();
+                                                editor.putString("Email",Username);
+                                                editor.putString("Password",Password);
+                                                editor.commit();
+                                            }
+                                        });
+
+                                        alert.setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                            }
+                                        });
+
+                                        alert.show();
+                                        return;
+                                    }
+
+                                    List<String> alici_liste = new ArrayList<String>();
+                                    for (int i = 0; i < numberOfPeople; i++) {
                                         alici_liste.add(trustedPeople.get(i).getEmail());
                                     }
 
-                                    new SendMailTask(MainActivity.this).execute("alperenkantarci@gmail.com",
-                                            "Alpbeysubuka4",alici_liste,"DENEME","DENEME");
+                                    Username = preferences.getString("Email","alperenkantarci@gmail.com");
+                                    Password = preferences.getString("Password","Alpbeysubuka4");
+                                    try {
+
+                                        new SendMailTask(MainActivity.this).execute(Username,
+                                                Password, alici_liste,"THIS IS AN EMERGENCY SITUATION" , "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
+                                                        "LOST MY LAST LOCATION IS HERE LONGITUDE: " +String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
+                                                        + String.valueOf(lastLocation.getLatitude()) + "\nMY SPEED: " + String.valueOf(lastLocation.getSpeed()) );
+                                    }catch (NullPointerException e){
+                                        Log.e("NULL","NULL");
+                                    }
 
 
                                 }
                             }
-
-                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.layout.user_password_layout);
-                            final EditText username = new EditText(MainActivity.this);
-                            final EditText password = new EditText(MainActivity.this);
-                            alert.setTitle("Mail Verification");
-                            alert.setMessage("You need to enter your password in order to send mail.");
-                            alert.setView(R.layout.user_password_layout);
-                            alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    Username = username.getText().toString();
-                                    Password = password.getText().toString();
-
-
-                                }
-                            });
-
-                            alert.setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-
-                                }
-                            });
-
-                            alert.show();
-
 
 
 
@@ -257,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     public boolean checkSMSPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
@@ -403,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            case 2:  {
+            case 2: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -415,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
                             == PackageManager.PERMISSION_GRANTED) {
 
                         //Request location updates:
-                       // getTheLocationInfo(this);
+                        // getTheLocationInfo(this);
 
                     }
 
@@ -429,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            case 3:  {
+            case 3: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
