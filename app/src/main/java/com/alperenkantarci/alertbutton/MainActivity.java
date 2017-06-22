@@ -190,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
             alert.setView(R.layout.user_password_layout);
 
 
-
             alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     Username = username.getText().toString();
