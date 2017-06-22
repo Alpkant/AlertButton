@@ -153,46 +153,49 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET};
+        if (!runBefore) {
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.layout.user_password_layout);
+            final EditText username = new EditText(MainActivity.this);
+            final EditText password = new EditText(MainActivity.this);
+            alert.setTitle("Mail Verification");
+            alert.setMessage("You need to enter your password in order to send mail.");
+            alert.setView(R.layout.user_password_layout);
 
 
+
+            alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    Username = username.getText().toString();
+                    Password = password.getText().toString();
+                    editor.putString("Email", Username);
+                    editor.putString("Password", Password);
+                    editor.commit();
+                }
+            });
+
+            alert.setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                }
+            });
+
+            alert.show();
+
+        }
+
+        if (!hasPermissions(MainActivity.this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, 1);
+        }
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                    if (!runBefore) {
 
-                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.layout.user_password_layout);
-                        final EditText username = new EditText(MainActivity.this);
-                        final EditText password = new EditText(MainActivity.this);
-                        alert.setTitle("Mail Verification");
-                        alert.setMessage("You need to enter your password in order to send mail.");
-                        alert.setView(R.layout.user_password_layout);
 
-                        alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Username = username.getText().toString();
-                                Password = password.getText().toString();
-                                editor.putString("Email", Username);
-                                editor.putString("Password", Password);
-                                editor.commit();
-                            }
-                        });
 
-                        alert.setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        });
-
-                        alert.show();
-
-                    }
-
-                    if (!hasPermissions(MainActivity.this, PERMISSIONS)) {
-                        ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, 1);
-                    }
 
                     getTheLocationInfo(MainActivity.this);
 
