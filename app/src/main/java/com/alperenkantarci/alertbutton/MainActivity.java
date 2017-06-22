@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.alperenkantarci.alertbutton.R.id.username;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
     double longitude, latitude, time;
     float speed, accuracy;
-    String Username, Password;
+    String Username= "";
+    String Password = "";
     int numberOfPeople;
 
 
@@ -116,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
 
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final SharedPreferences.Editor editor = preferences.edit();
-        final Boolean runBefore = preferences.getBoolean("RunBefore", false);
+         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+         SharedPreferences.Editor editor = preferences.edit();
+         Boolean runBefore = preferences.getBoolean("RunBefore", false);
         if (runBefore == false) {
 
             editor.putBoolean("RunBefore", true);
@@ -168,9 +169,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     Username = username.getText().toString();
                     Password = password.getText().toString();
-                    editor.putString("Email", Username);
-                    editor.putString("Password", Password);
-                    editor.commit();
                 }
             });
 
@@ -187,25 +185,46 @@ public class MainActivity extends AppCompatActivity {
         if (!hasPermissions(MainActivity.this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, 1);
         }
+
+
+
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = preferences.edit();
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if(!Username.equals("")){
+                    editor.putString("Email",Username);
+                    editor.putString("Password",Password);
+                    editor.commit();
+                }else{
+                    Username =  preferences.getString("Email", "alperenkantarci@gmail.com");
+                    Password =  preferences.getString("Password", "Alpbeysubuka4");
+                }
 
-
-
-
+                Log.e("USERNAME",Username);
+                Log.e("PASSWORD",Password);
 
                     getTheLocationInfo(MainActivity.this);
+                 numberOfPeople = preferences.getInt("Number", 0);
+                for (int i = 0; i < numberOfPeople; i++) {
+                    String name = preferences.getString(String.valueOf(i) + " name", "");
+                    String surname = preferences.getString(String.valueOf(i) + " surname", "");
+                    String countryCode = preferences.getString(String.valueOf(i) + " country", "");
+                    String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
+                    String email = preferences.getString(String.valueOf(i) + " email", "");
+                    trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+                }
 
-                    List<String> alici_liste = new ArrayList<String>();
-                    for (int i = 0; i < numberOfPeople; i++) {
+
+                List<String> alici_liste = new ArrayList<String>();
+                for (int i = 0; i < numberOfPeople; i++) {
                         alici_liste.add(trustedPeople.get(i).getEmail());
                     }
 
-                    Username = preferences.getString("Email", "alperenkantarci@gmail.com");
-                    Password = preferences.getString("Password", "Alpbeysubuka4");
+
+
                     try {
 
                         new SendMailTask(MainActivity.this).execute(Username,
@@ -243,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                             } */
 
 
-                }
+
 
             }
 
@@ -423,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                             == PackageManager.PERMISSION_GRANTED) {
 
                         //Request location updates:
-                        getTheLocationInfo(MainActivity.this);
+                       // getTheLocationInfo(MainActivity.this);
 
                     }
 
@@ -446,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.SEND_SMS)
                             == PackageManager.PERMISSION_GRANTED) {
-
+/*
                         try {
 
                             if (lastLocation.getLatitude() != 0) {
@@ -465,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } catch (NullPointerException e) {
                             Log.i("NULL", "NULL");
-                        }
+                        } */
 
                     }
 
@@ -490,7 +509,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.INTERNET)
                             == PackageManager.PERMISSION_GRANTED) {
 
-
+                    /*
                         List<String> alici_liste = new ArrayList<String>();
                         for (int i = 0; i < numberOfPeople; i++) {
                             alici_liste.add(trustedPeople.get(i).getEmail());
@@ -509,7 +528,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("NULL", "NULL");
                         }
 
-                    }
+                    }*/
 
                 } else {
 
@@ -525,4 +544,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-}
+}}
