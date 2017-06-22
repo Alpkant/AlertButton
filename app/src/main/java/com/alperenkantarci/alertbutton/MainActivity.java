@@ -18,7 +18,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 
 
@@ -50,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
     double longitude, latitude, time;
     float speed, accuracy;
-    String Username= "";
+    String Username = "";
     String Password = "";
     int numberOfPeople;
 
@@ -109,7 +106,12 @@ public class MainActivity extends AppCompatActivity {
                                 String email = preferences.getString(String.valueOf(i) + " email", "");
                                 trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
                             }
-
+                            String editedMessage = "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
+                                    "LOST MY LAST LOCATION IS HERE \nLONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
+                                    + String.valueOf(lastLocation.getLatitude()) +
+                                        "\nI am in the " + lastLocation.getCountry() + ", " +
+                                            lastLocation.getAdminArea() +"\n" + "\nMY SPEED: " +
+                                                 String.valueOf(lastLocation.getSpeed()) ;
 
                             List<String> alici_liste = new ArrayList<String>();
                             for (int i = 0; i < numberOfPeople; i++) {
@@ -117,16 +119,35 @@ public class MainActivity extends AppCompatActivity {
                             }
 
 
-
                             try {
 
                                 new SendMailTask(MainActivity.this).execute(Username,
-                                        Password, alici_liste, "THIS IS AN EMERGENCY SITUATION", "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
-                                                "LOST MY LAST LOCATION IS HERE LONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
-                                                + String.valueOf(lastLocation.getLatitude()) + "\nMY SPEED: " + String.valueOf(lastLocation.getSpeed()));
+                                        Password, alici_liste, "EMERGENCY CALL PLEASE HELP ME!" ,editedMessage );
                             } catch (NullPointerException e) {
                                 Log.e("NULL", "NULL");
                             }
+                        for (int i=0 ; i<numberOfPeople ; i++){
+
+                            try {
+
+                                if (lastLocation.getLatitude() != 0) {
+                                    try {
+                                        Log.i("SMS SUCCESS", "SUCCESS");
+                                        SmsManager smsManager = SmsManager.getDefault();
+                                        String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
+                                        String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
+                                        smsManager.sendTextMessage(sendNumber, null, editedMessage, null, null);
+                                    } catch (NullPointerException e) {
+                                        Log.i("NULL", "NULL");
+                                    }
+
+                                }
+                            } catch (
+                                    NullPointerException e) {
+                                Log.i("NULL", "NULL");
+                            }
+                        }
+
                         }
                     }
                 });
@@ -143,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
 
-         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-         SharedPreferences.Editor editor = preferences.edit();
-         Boolean runBefore = preferences.getBoolean("RunBefore", false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        Boolean runBefore = preferences.getBoolean("RunBefore", false);
         if (runBefore == false) {
 
             editor.putBoolean("RunBefore", true);
@@ -186,7 +207,9 @@ public class MainActivity extends AppCompatActivity {
             final EditText username = new EditText(MainActivity.this);
             final EditText password = new EditText(MainActivity.this);
             alert.setTitle("Mail Verification");
-            alert.setMessage("You need to enter your password in order to send mail.");
+            alert.setMessage("You need to enter your mail and password in order to send mail. \n" +
+                    "Your data doesn't share by anyone.This is an open source project so you can check" +
+                    " it out if you want to see the code.");
             alert.setView(R.layout.user_password_layout);
 
 
@@ -212,55 +235,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
 
-                if(!Username.equals("")){
-                    editor.putString("Email",Username);
-                    editor.putString("Password",Password);
+                if (!Username.equals("")) {
+                    editor.putString("Email", Username);
+                    editor.putString("Password", Password);
                     editor.commit();
-                }else{
-                    Username =  preferences.getString("Email", "alperenkantarci@gmail.com");
-                    Password =  preferences.getString("Password", "Alpbeysubuka4");
+                } else {
+                    Username = preferences.getString("Email", "alperenkantarci@gmail.com");
+                    Password = preferences.getString("Password", "Alpbeysubuka4");
                 }
 
-                Log.e("USERNAME",Username);
-                Log.e("PASSWORD",Password);
+                Log.e("USERNAME", Username);
+                Log.e("PASSWORD", Password);
 
-                    getTheLocationInfo(MainActivity.this);
-
-
-
-                        /*
-                            try{
-
-                                if (lastLocation.getLatitude() != 0) {
-                                    if (checkSMSPermission()) {
-                                        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                                                Manifest.permission.SEND_SMS)
-                                                == PackageManager.PERMISSION_GRANTED) {
-                                            try {
-                                                Log.i("SMS SUCCESS", "SUCCESS");
-                                                SmsManager smsManager = SmsManager.getDefault();
-                                                smsManager.sendTextMessage("05063014341", null, String.valueOf(lastLocation.getLatitude()), null, null);
-                                            } catch (NullPointerException e) {
-                                                Log.i("NULL", "NULL");
-                                            }
-
-                                        }
-                                    }
-                                } else {
-                                    Log.i("SMS FAIL", "FAIL");
-                                }
-                            }catch (NullPointerException e){
-                                Log.i("NULL","NULL");
-                            } */
-
-
+                getTheLocationInfo(MainActivity.this);
 
 
             }
@@ -279,22 +272,15 @@ public class MainActivity extends AppCompatActivity {
 
                 String country = address.getCountryCode();
                 String adminArea = address.getAdminArea();
-                String locality = address.getLocality();
-                String featureName = address.getFeatureName();
-                String addressLine = address.getAddressLine(1);
 
                 try {
 
                     Log.i("Country", country);
                     Log.i("adminArea", adminArea);
-                    Log.i("Locality", locality);
-                    Log.i("FeatureName", featureName);
-                    Log.i("AddressLine", addressLine);
 
                     lastLocation.setCountry(country);
                     lastLocation.setAdminArea(adminArea);
                     lastLocation.setAdminArea(adminArea);
-                    lastLocation.setAddress(addressLine);
 
 
                 } catch (NullPointerException e) {
@@ -307,124 +293,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
-        public boolean checkSMSPermission() {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.SEND_SMS)
-                    != PackageManager.PERMISSION_GRANTED) {
 
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.SEND_SMS)) {
-
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                    new AlertDialog.Builder(this)
-                            .setTitle("We need sms permission")
-                            .setMessage("In order to use the app please give permission.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //Prompt the user once explanation has been shown
-                                    ActivityCompat.requestPermissions(MainActivity.this,
-                                            new String[]{Manifest.permission.SEND_SMS},
-                                            2);
-                                }
-                            })
-                            .create()
-                            .show();
-
-
-                } else {
-                    // No explanation needed, we can request the permission.
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.SEND_SMS}, 2);
-                }
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        public boolean checkLocationPermission() {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                    new AlertDialog.Builder(this)
-                            .setTitle("We need location permission")
-                            .setMessage("In order to use the app please give permission.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //Prompt the user once explanation has been shown
-                                    ActivityCompat.requestPermissions(MainActivity.this,
-                                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                            1);
-                                }
-                            })
-                            .create()
-                            .show();
-
-
-                } else {
-                    // No explanation needed, we can request the permission.
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                }
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        public boolean checkInternetPermission() {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.INTERNET)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.INTERNET)) {
-
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                    new AlertDialog.Builder(this)
-                            .setTitle("We need internet permission")
-                            .setMessage("In order to use the app please give permission.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //Prompt the user once explanation has been shown
-                                    ActivityCompat.requestPermissions(MainActivity.this,
-                                            new String[]{Manifest.permission.INTERNET},
-                                            3);
-                                }
-                            })
-                            .create()
-                            .show();
-
-
-                } else {
-                    // No explanation needed, we can request the permission.
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.INTERNET}, 3);
-                }
-                return false;
-            } else {
-                return true;
-            }
-        }
-    */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -440,8 +309,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        //Request location updates:
-                       // getTheLocationInfo(MainActivity.this);
+
 
                     }
 
@@ -464,26 +332,8 @@ public class MainActivity extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.SEND_SMS)
                             == PackageManager.PERMISSION_GRANTED) {
-/*
-                        try {
-
-                            if (lastLocation.getLatitude() != 0) {
-
-                                try {
-                                    Log.i("SMS SUCCESS", "SUCCESS");
-                                    SmsManager smsManager = SmsManager.getDefault();
-                                    smsManager.sendTextMessage("05063014341", null, String.valueOf(lastLocation.getLatitude()), null, null);
-                                } catch (NullPointerException e) {
-                                    Log.i("NULL", "NULL");
-                                }
 
 
-                            } else {
-                                Log.i("SMS FAIL", "FAIL");
-                            }
-                        } catch (NullPointerException e) {
-                            Log.i("NULL", "NULL");
-                        } */
 
                     }
 
@@ -508,39 +358,21 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.INTERNET)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                    /*
-                        List<String> alici_liste = new ArrayList<String>();
-                        for (int i = 0; i < numberOfPeople; i++) {
-                            alici_liste.add(trustedPeople.get(i).getEmail());
-                        }
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                         SharedPreferences.Editor editor = preferences.edit();
-                        Username = preferences.getString("Email", "alperenkantarci@gmail.com");
-                        Password = preferences.getString("Password", "Alpbeysubuka4");
-                        try {
 
-                            new SendMailTask(MainActivity.this).execute(Username,
-                                    Password, alici_liste, "THIS IS AN EMERGENCY SITUATION", "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
-                                            "LOST MY LAST LOCATION IS HERE LONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
-                                            + String.valueOf(lastLocation.getLatitude()) + "\nMY SPEED: " + String.valueOf(lastLocation.getSpeed()));
-                        } catch (NullPointerException e) {
-                            Log.e("NULL", "NULL");
-                        }
 
-                    }*/
+                    } else {
 
-                } else {
+                        // permission denied, boo! Disable the
+                        // functionality that depends on this permission.
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    }
+                    return;
 
                 }
-                return;
 
             }
-
         }
+
+
     }
-
-
-}}
+}
