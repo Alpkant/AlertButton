@@ -98,9 +98,35 @@ public class MainActivity extends AppCompatActivity {
                             Log.i("Latitude", String.valueOf(latitude));
                             Log.i("Time", String.valueOf(time));
                             Log.i("Speed", String.valueOf(speed));
-
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             findAdress(latitude, longitude);
+                            numberOfPeople = preferences.getInt("Number", 0);
+                            for (int i = 0; i < numberOfPeople; i++) {
+                                String name = preferences.getString(String.valueOf(i) + " name", "");
+                                String surname = preferences.getString(String.valueOf(i) + " surname", "");
+                                String countryCode = preferences.getString(String.valueOf(i) + " country", "");
+                                String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
+                                String email = preferences.getString(String.valueOf(i) + " email", "");
+                                trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+                            }
 
+
+                            List<String> alici_liste = new ArrayList<String>();
+                            for (int i = 0; i < numberOfPeople; i++) {
+                                alici_liste.add(trustedPeople.get(i).getEmail());
+                            }
+
+
+
+                            try {
+
+                                new SendMailTask(MainActivity.this).execute(Username,
+                                        Password, alici_liste, "THIS IS AN EMERGENCY SITUATION", "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
+                                                "LOST MY LAST LOCATION IS HERE LONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
+                                                + String.valueOf(lastLocation.getLatitude()) + "\nMY SPEED: " + String.valueOf(lastLocation.getSpeed()));
+                            } catch (NullPointerException e) {
+                                Log.e("NULL", "NULL");
+                            }
                         }
                     }
                 });
@@ -207,33 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("PASSWORD",Password);
 
                     getTheLocationInfo(MainActivity.this);
-                 numberOfPeople = preferences.getInt("Number", 0);
-                for (int i = 0; i < numberOfPeople; i++) {
-                    String name = preferences.getString(String.valueOf(i) + " name", "");
-                    String surname = preferences.getString(String.valueOf(i) + " surname", "");
-                    String countryCode = preferences.getString(String.valueOf(i) + " country", "");
-                    String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
-                    String email = preferences.getString(String.valueOf(i) + " email", "");
-                    trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
-                }
 
-
-                List<String> alici_liste = new ArrayList<String>();
-                for (int i = 0; i < numberOfPeople; i++) {
-                        alici_liste.add(trustedPeople.get(i).getEmail());
-                    }
-
-
-
-                    try {
-
-                        new SendMailTask(MainActivity.this).execute(Username,
-                                Password, alici_liste, "THIS IS AN EMERGENCY SITUATION", "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
-                                        "LOST MY LAST LOCATION IS HERE LONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
-                                        + String.valueOf(lastLocation.getLatitude()) + "\nMY SPEED: " + String.valueOf(lastLocation.getSpeed()));
-                    } catch (NullPointerException e) {
-                        Log.e("NULL", "NULL");
-                    }
 
 
                         /*
