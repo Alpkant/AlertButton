@@ -6,8 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
-
-import java.util.List;
+import android.util.Log;
 
 /**
  * Created by Alperen Kantarci on 23.06.2017.
@@ -31,6 +30,8 @@ public class FragmentActivity extends PreferenceActivity {
         {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.activity_settings);
+
+
         }
 
 
@@ -41,6 +42,8 @@ public class FragmentActivity extends PreferenceActivity {
             {
                 // get preference by key
                 Preference pref = findPreference(key);
+
+                Log.e("KEY", pref.toString() + String.valueOf(pref.isEnabled() ));
                 // do your stuff here
             }
         }
