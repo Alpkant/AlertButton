@@ -1,0 +1,52 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <PreferenceCategory
+      android:title="Alert settings"
+      >
+      <CheckBoxPreference android:title="Send Sms"
+          android:defaultValue = "true"
+          android:key="ShouldSendSms"
+          android:summary="Do you want to send Sms when click to the button."
+          />
+      <CheckBoxPreference android:title="Send global sms (May be charged extra)"
+          android:defaultValue = "true"
+          android:key="ShouldSendGlobalSms"
+          android:summary="If your contact in another country should we still send sms."
+          />
+
+  </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Development Info"
+        >
+
+
+        <Preference
+            android:key="github"
+            android:title="@string/source_code"
+            android:summary="This is an open source app.If you want to check codes click here.">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/github"
+                />
+
+        </Preference>
+
+        <Preference
+            android:key="rate"
+            android:title="Rate this App"
+            android:summary="If you want to rate or give suggestion click here."
+            >
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/googleStore"
+            />
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

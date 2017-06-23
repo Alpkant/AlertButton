@@ -236,4 +236,10 @@
     <string name="empty_list_error">You have no one to be alerted.Add trusted people in order to see them.</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="enter_your_password">Enter your password</string>
+    <string name="github">https://github.com/Alpkant/AlertButton</string>
+    <string name="source_code">Source Code</string>
+    <string name="googleStore">https://stackoverflow.com/questions/11270591/rate-google-play-application-directly-in-app</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
