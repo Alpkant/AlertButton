@@ -154,16 +154,17 @@ public class MainActivity extends AppCompatActivity {
                                     try {
                                         if (lastLocation.getLatitude() != 0) {
                                             try {
-                                                Log.i("SMS SUCCESS", "SUCCESS");
                                                 SmsManager smsManager = SmsManager.getDefault();
                                                 String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
                                                 String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
-                                                if(trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms)
+                                                if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
                                                     smsManager.sendTextMessage(sendNumber, null, editedMessage, null, null);
-                                                else
-                                                    Toast.makeText(MainActivity.this,"You selected to not send sms for foreign country telephones so we didn't send.", Toast.LENGTH_LONG).show();
+                                                    Log.i("SMS SUCCESS", "SUCCESS");
+
+                                                } else
+                                                    Toast.makeText(MainActivity.this, "You selected to not send sms for foreign country telephones so we didn't send.", Toast.LENGTH_LONG).show();
                                             } catch (NullPointerException e) {
-                                                Log.i("NULL", "NULL");
+                                                Log.i("SMS ERROR", "NULL");
                                             }
                                         }
                                     } catch (
@@ -171,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
                                         Log.i("NULL", "NULL");
                                     }
                                 }
-                            }else{
-                                Toast.makeText(MainActivity.this,"Your settings disabled to send SMS so we didn't send any sms.\n" +
+                            } else {
+                                Toast.makeText(MainActivity.this, "Your settings disabled to send SMS so we didn't send any sms.\n" +
                                         "To change this go to the settings", Toast.LENGTH_LONG).show();
                             }
                         }
