@@ -44,6 +44,8 @@ public class ListActivity extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
+
+
         int numberOfPeople = preferences.getInt("Number", 0);
         for (int i = 0; i < numberOfPeople; i++) {
             String name = preferences.getString(String.valueOf(i) + " name", "");

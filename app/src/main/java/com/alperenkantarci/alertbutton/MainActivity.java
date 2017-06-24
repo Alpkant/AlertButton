@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -35,7 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.i("Speed", String.valueOf(speed));
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             findAdress(latitude, longitude);
+                            Boolean shouldSendSms = preferences.getBoolean("ShouldSendSms", true);
+                            Boolean shouldSendGlobalSms = preferences.getBoolean("ShouldSendGlobalSms", true);
+
                             numberOfPeople = preferences.getInt("Number", 0);
                             for (int i = 0; i < numberOfPeople; i++) {
                                 String name = preferences.getString(String.valueOf(i) + " name", "");
@@ -128,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
                             String editedMessage = "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
                                     "LOST MY LAST LOCATION IS HERE \nLONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
                                     + String.valueOf(lastLocation.getLatitude()) +
-                                        "\nI am in the " + lastLocation.getCountry() + ", " +
-                                            lastLocation.getAdminArea() +"\n" + "\nMY SPEED: " +
-                                                 String.valueOf(lastLocation.getSpeed()) ;
+                                    "\nI am in the " + lastLocation.getCountry() + ", " +
+                                    lastLocation.getAdminArea() + "\n" + "\nMY SPEED: " +
+                                    String.valueOf(lastLocation.getSpeed());
 
                             List<String> alici_liste = new ArrayList<String>();
                             for (int i = 0; i < numberOfPeople; i++) {
@@ -141,32 +144,37 @@ public class MainActivity extends AppCompatActivity {
                             try {
 
                                 new SendMailTask(MainActivity.this).execute(Username,
-                                        Password, alici_liste, "EMERGENCY CALL PLEASE HELP ME!" ,editedMessage );
+                                        Password, alici_liste, "EMERGENCY CALL PLEASE HELP ME!", editedMessage);
                             } catch (NullPointerException e) {
                                 Log.e("NULL", "NULL");
                             }
-                        for (int i=0 ; i<numberOfPeople ; i++){
 
-                            try {
-
-                                if (lastLocation.getLatitude() != 0) {
+                            if (shouldSendSms) {
+                                for (int i = 0; i < numberOfPeople; i++) {
                                     try {
-                                        Log.i("SMS SUCCESS", "SUCCESS");
-                                        SmsManager smsManager = SmsManager.getDefault();
-                                        String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
-                                        String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
-                                        smsManager.sendTextMessage(sendNumber, null, editedMessage, null, null);
-                                    } catch (NullPointerException e) {
+                                        if (lastLocation.getLatitude() != 0) {
+                                            try {
+                                                Log.i("SMS SUCCESS", "SUCCESS");
+                                                SmsManager smsManager = SmsManager.getDefault();
+                                                String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
+                                                String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
+                                                if(trustedPeople.get(i).getCountry_code().equals("tmp[1]"))
+                                                    smsManager.sendTextMessage(sendNumber, null, editedMessage, null, null);
+                                                else
+                                                    Toast.makeText(MainActivity.this,"You selected to not send sms for foreign country telephones so we didn't send.", Toast.LENGTH_LONG).show();
+                                            } catch (NullPointerException e) {
+                                                Log.i("NULL", "NULL");
+                                            }
+                                        }
+                                    } catch (
+                                            NullPointerException e) {
                                         Log.i("NULL", "NULL");
                                     }
-
                                 }
-                            } catch (
-                                    NullPointerException e) {
-                                Log.i("NULL", "NULL");
+                            }else{
+                                Toast.makeText(MainActivity.this,"Your settings disabled to send SMS so we didn't send any sms.\n" +
+                                        "To change this go to the settings", Toast.LENGTH_LONG).show();
                             }
-                        }
-
                         }
                     }
                 });
@@ -329,7 +337,6 @@ public class MainActivity extends AppCompatActivity {
                             == PackageManager.PERMISSION_GRANTED) {
 
 
-
                     }
 
                 } else {
@@ -351,7 +358,6 @@ public class MainActivity extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.SEND_SMS)
                             == PackageManager.PERMISSION_GRANTED) {
-
 
 
                     }
@@ -376,7 +382,6 @@ public class MainActivity extends AppCompatActivity {
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.INTERNET)
                             == PackageManager.PERMISSION_GRANTED) {
-
 
 
                     } else {

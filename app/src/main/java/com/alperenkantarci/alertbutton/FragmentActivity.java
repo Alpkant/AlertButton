@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -41,7 +42,7 @@ public class FragmentActivity extends PreferenceActivity {
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
             String ad = (String) preference.getTitle();
             Log.e("KEY", ad );
-            return true;
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
 
         @Override
