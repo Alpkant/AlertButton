@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getTheLocationInfo(Activity activity) {
+    public void sendAlarm(Activity activity) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
 
         mFusedLocationClient.getLastLocation()
@@ -135,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
                                     "\nI am in the " + lastLocation.getCountry() + ", " +
                                     lastLocation.getAdminArea() + "\n" + "\nMY SPEED: " +
                                     String.valueOf(lastLocation.getSpeed());
+                            String smsEditedMessage = " THIS IS AN EMERGENCY SITUATION I COULD BE IN DANGER LONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
+                                    + String.valueOf(lastLocation.getLatitude()) +
+                                    "\nI am in the " + lastLocation.getCountry() + ", " +
+                                    lastLocation.getAdminArea();
 
                             List<String> alici_liste = new ArrayList<String>();
                             for (int i = 0; i < numberOfPeople; i++) {
@@ -155,13 +159,14 @@ public class MainActivity extends AppCompatActivity {
                                     try {
                                         if (lastLocation.getLatitude() != 0) {
                                             try {
+
                                                 SmsManager smsManager = SmsManager.getDefault();
                                                 PendingIntent sentPI;
                                                 String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
                                                 String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
                                                 if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
                                                     sentPI = PendingIntent.getBroadcast(MainActivity.this,0,new Intent("SMS_SENT"),0);
-                                                    smsManager.sendTextMessage(sendNumber, null, editedMessage, sentPI, null);
+                                                    smsManager.sendTextMessage(sendNumber, null, smsEditedMessage, sentPI, null);
                                                     Log.i("SMS SUCCESS", "SUCCESS");
 
                                                 } else
@@ -198,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = preferences.edit();
         Boolean runBefore = preferences.getBoolean("RunBefore", false);
-        if (runBefore == false) {
+        if (!runBefore) {
 
             editor.putBoolean("RunBefore", true);
             editor.apply();
@@ -284,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("USERNAME", Username);
                 Log.e("PASSWORD", Password);
 
-                getTheLocationInfo(MainActivity.this);
+                sendAlarm(MainActivity.this);
 
 
             }
