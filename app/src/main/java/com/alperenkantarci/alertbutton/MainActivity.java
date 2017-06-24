@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                                                 SmsManager smsManager = SmsManager.getDefault();
                                                 String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
                                                 String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
-                                                if(trustedPeople.get(i).getCountry_code().equals("tmp[1]"))
+                                                if(trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms)
                                                     smsManager.sendTextMessage(sendNumber, null, editedMessage, null, null);
                                                 else
                                                     Toast.makeText(MainActivity.this,"You selected to not send sms for foreign country telephones so we didn't send.", Toast.LENGTH_LONG).show();
