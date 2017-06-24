@@ -2,6 +2,7 @@ package com.alperenkantarci.alertbutton;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -155,10 +156,12 @@ public class MainActivity extends AppCompatActivity {
                                         if (lastLocation.getLatitude() != 0) {
                                             try {
                                                 SmsManager smsManager = SmsManager.getDefault();
+                                                PendingIntent sentPI;
                                                 String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
                                                 String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
                                                 if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
-                                                    smsManager.sendTextMessage(sendNumber, null, editedMessage, null, null);
+                                                    sentPI = PendingIntent.getBroadcast(MainActivity.this,0,new Intent("SMS_SENT"),0);
+                                                    smsManager.sendTextMessage(sendNumber, null, editedMessage, sentPI, null);
                                                     Log.i("SMS SUCCESS", "SUCCESS");
 
                                                 } else
