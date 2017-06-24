@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -34,6 +36,12 @@ public class FragmentActivity extends PreferenceActivity {
 
         }
 
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+            String ad = (String) preference.getTitle();
+            Log.e("KEY", ad );
+            return true;
+        }
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
@@ -41,9 +49,9 @@ public class FragmentActivity extends PreferenceActivity {
             if (key.equals("setting_title_font_color"))
             {
                 // get preference by key
-                Preference pref = findPreference(key);
-
-                Log.e("KEY", pref.toString() + String.valueOf(pref.isEnabled() ));
+                Preference pref = getPreferenceScreen().getPreference(0);
+                String ad = (String) pref.getTitle();
+                Log.e("KEY", ad );
                 // do your stuff here
             }
         }
