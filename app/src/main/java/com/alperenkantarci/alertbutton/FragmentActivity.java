@@ -13,6 +13,8 @@ import android.util.Log;
  * Created by Alperen Kantarci on 23.06.2017.
  */
 
+
+
 public class FragmentActivity extends PreferenceActivity {
 
     @Override
