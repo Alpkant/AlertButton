@@ -1,9 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    lintOptions {
+        disable "ResourceType"
+    }
+
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.alperenkantarci.alertbutton"
         minSdkVersion 18
         targetSdkVersion 26

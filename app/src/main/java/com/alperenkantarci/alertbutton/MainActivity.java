@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                                     "\nI am in the " + lastLocation.getCountry() + ", " +
                                     lastLocation.getAdminArea();
 
-                            List<String> alici_liste = new ArrayList<String>();
+                            List<String> alici_liste = new ArrayList<>();
                             for (int i = 0; i < numberOfPeople; i++) {
                                 alici_liste.add(trustedPeople.get(i).getEmail());
                             }
@@ -332,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1: {
                 // If request is cancelled, the result arrays are empty.
