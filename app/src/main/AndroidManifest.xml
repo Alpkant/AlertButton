@@ -23,14 +23,16 @@
         </activity>
         <activity
             android:name=".AddActivity"
+            android:label="Add trusted person"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".ListActivity"
-            android:label="@string/title_activity_list"
+            android:label="List of trusted people"
             android:parentActivityName=".MainActivity" />
 
         <activity android:name=".FragmentActivity"
+            android:label="Settings"
             android:parentActivityName=".MainActivity"/>
 
     </application>

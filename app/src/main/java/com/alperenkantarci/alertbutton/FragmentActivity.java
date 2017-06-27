@@ -21,6 +21,7 @@ public class FragmentActivity extends PreferenceActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getFragmentManager().beginTransaction().replace(android.R.id.content , new SettingsFragment()).commit();
 
     }

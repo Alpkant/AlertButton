@@ -238,7 +238,7 @@
     <string name="enter_your_password">Enter your password</string>
     <string name="github">https://github.com/Alpkant/AlertButton</string>
     <string name="source_code">Source Code</string>
-    <string name="googleStore">https://stackoverflow.com/questions/11270591/rate-google-play-application-directly-in-app</string>
+    <string name="googleStore">https://play.google.com/store/apps/details?id=com.alperenkantarci.alertbutton</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
