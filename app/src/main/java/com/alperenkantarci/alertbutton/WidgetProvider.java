@@ -18,6 +18,8 @@ import static com.alperenkantarci.alertbutton.R.drawable.photo1;
  */
 
 public class WidgetProvider extends AppWidgetProvider {
+
+    public static String WidgetButton = "android.appwidget.action.APPWIDGET_UPDATE";
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         ComponentName thisWidget = new ComponentName(context,
@@ -43,7 +45,17 @@ public class WidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
 
 
+
         }
 
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (WidgetButton.equals(intent.getAction())) {
+
+            Log.e("SDAFDSA","ASDFSDA");
+        }
+        super.onReceive(context, intent);
     }
 }
