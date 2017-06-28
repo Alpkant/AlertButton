@@ -28,6 +28,8 @@ public class WidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.widget_layout);
 
+            remoteViews.setImageViewResource(R.id.alarm_button_widget,R.drawable.photo1);
+
 
             // Register an onClickListener
             Intent intent = new Intent(context, WidgetProvider.class);
