@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -19,7 +21,11 @@ import static com.alperenkantarci.alertbutton.R.drawable.photo1;
 
 public class WidgetProvider extends AppWidgetProvider {
 
+    String Username = "";
+    String Password = "";
+
     public static String WidgetButton = "android.appwidget.action.APPWIDGET_UPDATE";
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         ComponentName thisWidget = new ComponentName(context,
@@ -30,7 +36,7 @@ public class WidgetProvider extends AppWidgetProvider {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                     R.layout.widget_layout);
 
-            remoteViews.setImageViewResource(R.id.alarm_button_widget,R.drawable.photo1);
+            remoteViews.setImageViewResource(R.id.alarm_button_widget, R.drawable.photo1);
 
 
             // Register an onClickListener
@@ -44,8 +50,6 @@ public class WidgetProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.alarm_button_widget, pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
 
-
-
         }
 
     }
@@ -53,9 +57,30 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (WidgetButton.equals(intent.getAction())) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            Boolean firstRun = sharedPreferences.getBoolean("WidgetFirstRun", true);
+            if (firstRun) {
+                Log.e("onReceive", "onRecieveFirst");
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("WidgetFirstRun", false);
+                editor.commit();
+            } else {
+                
+                Log.e("onReceive", "onRecieveButonActivitysi");
 
-            Log.e("SDAFDSA","ASDFSDA");
+            }
         }
         super.onReceive(context, intent);
+    }
+
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        Log.e("onDeleted", "onDeleted");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("WidgetFirstRun", true);
+        editor.apply();
+        super.onDeleted(context, appWidgetIds);
     }
 }
