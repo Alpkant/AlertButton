@@ -35,13 +35,7 @@ import static android.R.style.Widget;
 
 public class WidgetProvider extends AppWidgetProvider {
 
-    FusedLocationProviderClient mFusedLocationClient;
-    double longitude, latitude, time;
-    float speed, accuracy;
-    LocationDetails lastLocation;
-    String Username = "";
-    String Password = "";
-    int numberOfPeople=0;
+
 
     public static String WidgetButton = "android.appwidget.action.APPWIDGET_UPDATE";
 
