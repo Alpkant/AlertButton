@@ -49,6 +49,13 @@
                 android:resource="@xml/app_widget" />
         </receiver>
 
+        <service
+            android:name=".WidgetService"
+            android:icon="@drawable/photo1"
+            android:label="Widget Service"
+            >
+        </service>
+
     </application>
 
 </manifest>
