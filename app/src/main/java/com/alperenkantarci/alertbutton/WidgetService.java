@@ -12,8 +12,8 @@ import android.util.Log;
 public class WidgetService extends IntentService {
 
 
-    public WidgetService(String name) {
-        super("Widget Service");
+    public WidgetService() {
+        super("WidgetService");
     }
 
     @Override
