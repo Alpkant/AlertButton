@@ -65,6 +65,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 editor.putBoolean("WidgetFirstRun", false);
                 editor.commit();
             } else {
+
                 
                 Log.e("onReceive", "onRecieveButonActivitysi");
 
