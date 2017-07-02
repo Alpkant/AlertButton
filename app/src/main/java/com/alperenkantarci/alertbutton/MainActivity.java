@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
                             try {
 
-                                new SendMailTask(MainActivity.this).execute(Username,
+                                new SendMailTask().execute(Username,
                                         Password, alici_liste, "EMERGENCY CALL PLEASE HELP ME!", editedMessage);
                             } catch (NullPointerException e) {
                                 Log.e("NULL", "NULL");

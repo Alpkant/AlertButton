@@ -16,35 +16,35 @@ public class SendMailTask extends AsyncTask {
     private ProgressDialog statusDialog;
     private Activity sendMailActivity;
 
-    public SendMailTask(Activity activity) {
-        sendMailActivity = activity;
+    public SendMailTask( ) {
+       // sendMailActivity = activity;
 
     }
 
     protected void onPreExecute() {
-        statusDialog = new ProgressDialog(sendMailActivity);
+       /* statusDialog = new ProgressDialog(sendMailActivity);
         statusDialog.setMessage("Getting ready...");
         statusDialog.setIndeterminate(false);
         statusDialog.setCancelable(false);
-        statusDialog.show();
+        statusDialog.show(); */
     }
 
     @Override
     protected Object doInBackground(Object... args) {
         try {
             Log.i("SendMailTask", "About to instantiate GMail...");
-            publishProgress("Processing input....");
+           // publishProgress("Processing input....");
             GMail androidEmail = new GMail(args[0].toString(),
                     args[1].toString(), (List) args[2], args[3].toString(),
                     args[4].toString());
-            publishProgress("Preparing mail message....");
+           // publishProgress("Preparing mail message....");
             androidEmail.createEmailMessage();
-            publishProgress("Sending email....");
+           // publishProgress("Sending email....");
             androidEmail.sendEmail();
-            publishProgress("Email Sent.");
+           // publishProgress("Email Sent.");
             Log.i("SendMailTask", "Mail Sent.");
         } catch (Exception e) {
-            publishProgress(e.getMessage());
+           // publishProgress(e.getMessage());
             Log.e("SendMailTask", e.getMessage(), e);
         }
         return null;
@@ -58,7 +58,7 @@ public class SendMailTask extends AsyncTask {
 
     @Override
     public void onPostExecute(Object result) {
-        statusDialog.dismiss();
+      //  statusDialog.dismiss();
     }
 
 }
