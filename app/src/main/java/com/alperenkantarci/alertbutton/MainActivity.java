@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.i("Latitude", String.valueOf(latitude));
                             Log.i("Time", String.valueOf(time));
                             Log.i("Speed", String.valueOf(speed));
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
                             findAdress(latitude, longitude);
                             Boolean shouldSendSms = preferences.getBoolean("ShouldSendSms", true);
                             Boolean shouldSendGlobalSms = preferences.getBoolean("ShouldSendGlobalSms", true);
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);;
         SharedPreferences.Editor editor = preferences.edit();
         Boolean runBefore = preferences.getBoolean("RunBefore", false);
         if (!runBefore) {
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         alarm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
                 SharedPreferences.Editor editor = preferences.edit();
 
                 if (!Username.equals("")) {

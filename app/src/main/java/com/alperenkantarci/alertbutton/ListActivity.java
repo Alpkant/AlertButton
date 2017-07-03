@@ -42,7 +42,7 @@ public class ListActivity extends AppCompatActivity {
         trustedPeople = new ArrayList<>();
         empty_list = (TextView) findViewById(R.id.empty_view);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = preferences.edit();
 
 

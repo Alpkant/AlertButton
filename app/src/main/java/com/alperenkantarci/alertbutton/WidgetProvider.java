@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.R.style.Widget;
+import static android.content.Context.MODE_MULTI_PROCESS;
 
 
 /**
@@ -70,7 +71,7 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (WidgetButton.equals(intent.getAction())) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
             Boolean firstRun = sharedPreferences.getBoolean("WidgetFirstRun", true);
             if (firstRun) {
                 Log.e("onReceive", "onRecieveFirst");
@@ -78,8 +79,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 editor.putBoolean("WidgetFirstRun", false);
                 editor.commit();
             } else {
-                Intent ServiceIntent = new Intent(context,WidgetService.class);
-                context.startService(ServiceIntent);
+                context.startService(new Intent(context,WidgetService.class));
                 Log.e("onReceive", "onRecieveButonActivitysi");
 
             }
@@ -91,7 +91,7 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         Log.e("onDeleted", "onDeleted");
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("WidgetFirstRun", true);
         editor.apply();

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import static android.content.Context.MODE_MULTI_PROCESS;
 import static java.lang.reflect.Array.getInt;
 
 
@@ -72,7 +73,7 @@ public class ViewAdapter extends BaseAdapter {
                 mTrustedPeople.remove(i);
                 notifyDataSetChanged();
 
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+                SharedPreferences preferences = view.getContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();
                 editor.commit();

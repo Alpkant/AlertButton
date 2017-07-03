@@ -45,18 +45,19 @@ public class WidgetService extends Service  {
 
 
 
-
     @Override
     public int onStartCommand(Intent intent,  int flags, int startId) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
         Executor executor = new Executor() {
             @Override
             public void execute(@NonNull Runnable runnable) {
-                context = getApplicationContext();
                 runnable.run();
             }
+
         };
+        context = getApplicationContext();
         mFusedLocationClient.getLastLocation().addOnSuccessListener(executor, new OnSuccessListener<Location>() {
+
             @Override
             public void onSuccess(Location location) {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -158,6 +159,11 @@ public class WidgetService extends Service  {
         });
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void findAdress(double latitude, double longitude) {

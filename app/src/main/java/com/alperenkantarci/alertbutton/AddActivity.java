@@ -51,7 +51,7 @@ public class AddActivity extends AppCompatActivity {
          * This part retrieve all saved persons from shared preferences.
          */
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = preferences.edit();
         int numberOfPeople = preferences.getInt("Number", 0);
         for (int i = 0; i < numberOfPeople; i++) {
@@ -96,7 +96,7 @@ public class AddActivity extends AppCompatActivity {
                 trustedPeople.add(newPerson);
 
 
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("Number", trustedPeople.size());
                 int i = trustedPeople.size() - 1;
