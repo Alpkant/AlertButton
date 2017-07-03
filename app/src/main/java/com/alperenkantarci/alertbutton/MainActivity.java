@@ -284,8 +284,8 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("Password", Password);
                     editor.commit();
                 } else {
-                    Username = preferences.getString("Email", "alperenkantarci@gmail.com");
-                    Password = preferences.getString("Password", "Alpbeysubuka4");
+                    Username = preferences.getString("Email", "error@gmail.com");
+                    Password = preferences.getString("Password", "error");
                 }
 
                 Log.e("USERNAME", Username);

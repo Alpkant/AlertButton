@@ -60,14 +60,13 @@ public class WidgetService extends Service  {
 
             @Override
             public void onSuccess(Location location) {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                Username = preferences.getString("Email", "asdf@gmail.com");
-                Password = preferences.getString("Password", "adsf");
+                SharedPreferences preferences = context.getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
+                Username = preferences.getString("Email", "error@gmail.com");
+                Password = preferences.getString("Password", "error");
                 Log.e("USERNAME",Username);
                 Log.e("PASSWORD",Password);
-
-
                 /*
+                trustedPeople = new ArrayList<TrustyPerson>();
                 if (location != null) {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
@@ -85,7 +84,7 @@ public class WidgetService extends Service  {
                     Log.i("Latitude", String.valueOf(latitude));
                     Log.i("Time", String.valueOf(time));
                     Log.i("Speed", String.valueOf(speed));
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                   // SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     findAdress(latitude, longitude);
                     Boolean shouldSendSms = preferences.getBoolean("ShouldSendSms", true);
                     Boolean shouldSendGlobalSms = preferences.getBoolean("ShouldSendGlobalSms", true);
