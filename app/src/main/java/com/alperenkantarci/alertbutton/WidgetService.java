@@ -65,6 +65,7 @@ public class WidgetService extends Service  {
                 Password = preferences.getString("Password", "error");
                 Log.e("USERNAME",Username);
                 Log.e("PASSWORD",Password);
+                stopSelf();
                 /*
                 trustedPeople = new ArrayList<TrustyPerson>();
                 if (location != null) {
@@ -157,7 +158,7 @@ public class WidgetService extends Service  {
             }
         });
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

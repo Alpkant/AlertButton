@@ -241,9 +241,9 @@ public class MainActivity extends AppCompatActivity {
         final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET};
         if (!runBefore) {
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.layout.user_password_layout);
-            final EditText username = new EditText(MainActivity.this);
-            final EditText password = new EditText(MainActivity.this);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this, R.layout.user_password_layout);
+             final EditText username = new EditText(this);
+             final EditText password = new EditText(this);
             alert.setTitle("Mail Verification");
             alert.setMessage("You need to enter your mail and password in order to send mail. \n" +
                     "Your data doesn't share by anyone.This is an open source project so you can check" +
@@ -255,6 +255,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     Username = username.getText().toString();
                     Password = password.getText().toString();
+                    Log.e("USERNAME ALARM",Username);
+                    Log.e("PASSWORD ALARM",Password);
                 }
             });
 
@@ -264,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            alert.create();
             alert.show();
 
         }
