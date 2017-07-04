@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.alperenkantarci.alertbutton.R.id.username;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -241,32 +243,41 @@ public class MainActivity extends AppCompatActivity {
         final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET};
         if (!runBefore) {
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(this, R.layout.user_password_layout);
-             final EditText username = new EditText(this);
-             final EditText password = new EditText(this);
-            alert.setTitle("Mail Verification");
-            alert.setMessage("You need to enter your mail and password in order to send mail. \n" +
+            LayoutInflater layoutInflater = LayoutInflater.from(this);
+            final View rootView = layoutInflater.inflate(R.layout.user_password_layout,null);
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setView(rootView);
+
+
+            EditText username;
+            EditText password;
+
+            alertDialog.setTitle("Mail Verification");
+            alertDialog.setMessage("You need to enter your mail and password in order to send mail. \n" +
                     "Your data doesn't share by anyone.This is an open source project so you can check" +
                     " it out if you want to see the code.");
-            alert.setView(R.layout.user_password_layout);
+            alertDialog.setView(R.layout.user_password_layout);
 
-
-            alert.setPositiveButton("Enter", new DialogInterface.OnClickListener() {
+            alertDialog.setCancelable(false)
+                    .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
+                    EditText username = (EditText) rootView.findViewById(R.id.username);
+                    EditText password = (EditText) rootView.findViewById(R.id.password);
+
                     Username = username.getText().toString();
                     Password = password.getText().toString();
                     Log.e("USERNAME ALARM",Username);
                     Log.e("PASSWORD ALARM",Password);
-                }
-            });
 
-            alert.setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
+                }
+            }).setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-
+                    dialog.cancel();
                 }
             });
 
-            alert.create();
+            AlertDialog alert =  alertDialog.create();
             alert.show();
 
         }
