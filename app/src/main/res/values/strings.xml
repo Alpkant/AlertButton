@@ -211,25 +211,16 @@
 
     <string name="add_as_person">Add as a trusted person</string>
     <string name="add_person">Add trusty person</string>
-
     <string name="app_name">Alert Button</string>
-
     <string name="e_mail">E-mail :</string>
-
     <string name="email_hint">johndoe@nomail.com</string>
-
     <string name="list_people">See all trusty people</string>
-
     <string name="name">Name :</string>
     <string name="name_hint">John</string>
-
     <string name="phone_number">Phone Number :</string>
-
-    <string name="select_from_contact">Select from contact</string>
-
+    <string name="select_from_contact">Select from contacts</string>
     <string name="surname">Surname :</string>
     <string name="surname_hint">Doe</string>
-
     <string name="title_activity_list">ListActivity</string>
     <string name="empty_list">You have no trusted person.Please add in order to see and alert them.</string>
     <string name="settings">Settings</string>
@@ -239,7 +230,5 @@
     <string name="github">https://github.com/Alpkant/AlertButton</string>
     <string name="source_code">Source Code</string>
     <string name="googleStore">https://play.google.com/store/apps/details?id=com.alperenkantarci.alertbutton</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="or">or</string>
 </resources>
