@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.alperenkantarci.alertbutton.R.id.username;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -208,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         Boolean runBefore = preferences.getBoolean("RunBefore", false);
         if (!runBefore) {
-
             editor.putBoolean("RunBefore", true);
             editor.apply();
         }
@@ -257,16 +255,22 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setMessage("You need to enter your mail and password in order to send mail. \n" +
                     "Your data doesn't share by anyone.This is an open source project so you can check" +
                     " it out if you want to see the code.");
-            alertDialog.setView(R.layout.user_password_layout);
+
 
             alertDialog.setCancelable(false)
                     .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    EditText username = (EditText) rootView.findViewById(R.id.username);
-                    EditText password = (EditText) rootView.findViewById(R.id.password);
-
+                    EditText username =  rootView.findViewById(R.id.usernameAlertDialog);
+                    EditText password =  rootView.findViewById(R.id.passwordAlertDialog);
                     Username = username.getText().toString();
                     Password = password.getText().toString();
+
+                    SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Email", Username);
+                    editor.putString("Password", Password);
+                    editor.commit();
+
                     Log.e("USERNAME ALARM",Username);
                     Log.e("PASSWORD ALARM",Password);
 
@@ -291,19 +295,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
-                SharedPreferences.Editor editor = preferences.edit();
 
-                if (!Username.equals("")) {
-                    editor.putString("Email", Username);
-                    editor.putString("Password", Password);
-                    editor.commit();
-                } else {
-                    Username = preferences.getString("Email", "error@gmail.com");
-                    Password = preferences.getString("Password", "error");
-                }
+                Username = preferences.getString("Email", "error@gmail.com");
+                Password = preferences.getString("Password", "error");
 
-                Log.e("USERNAME", Username);
-                Log.e("PASSWORD", Password);
+                Log.e("USERNAMESHARED", Username);
+                Log.e("PASSWORDSHARED", Password);
 
                 sendAlarm(MainActivity.this);
 
