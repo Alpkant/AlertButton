@@ -149,8 +149,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/or"
         app:layout_constraintBottom_toTopOf="@+id/add_button"
-        app:layout_constraintLeft_toLeftOf="@+id/button2"
-        app:layout_constraintRight_toRightOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintLeft_toLeftOf="@+id/add_from_contact_button"
+        app:layout_constraintRight_toRightOf="@+id/add_from_contact_button"
+        app:layout_constraintTop_toBottomOf="@+id/add_from_contact_button" />
 
 </android.support.constraint.ConstraintLayout>
