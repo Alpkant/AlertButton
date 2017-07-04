@@ -23,13 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.R.attr.data;
+import static android.R.attr.id;
 
 
 public class AddActivity extends AppCompatActivity {
 
 
     static final int PICK_CONTACT = 1;
-    String firstName,family,display;
+    String firstName, family, display;
     EditText name, surname, phoneNumber, email;
     Spinner country_codes;
     Button add_button;
@@ -92,8 +93,7 @@ public class AddActivity extends AppCompatActivity {
                 if (name.getText().toString().equals("")) {
                     Toast.makeText(AddActivity.this, "Name can't be empty.Please enter a name.", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                else if (phoneNumber.getText().toString().equals("") && email.getText().toString().equals("")) {
+                } else if (phoneNumber.getText().toString().equals("") && email.getText().toString().equals("")) {
                     Toast.makeText(AddActivity.this, "Either email or phone number should be given in order to add a person.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -135,7 +135,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                 startActivityForResult(intent, PICK_CONTACT);
-                Log.e("ADDD","ASDFDSA");
+                Log.e("ADDD", "ASDFDSA");
             }
 
         });
@@ -159,7 +159,7 @@ public class AddActivity extends AppCompatActivity {
 
                     // Fetch contact name with a specific ID
                     String whereName = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = " + contactId;
-                    String[] whereNameParams = new String[] { ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE };
+                    String[] whereNameParams = new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE};
                     Cursor nameCur = getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, whereName, whereNameParams, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
                     while (nameCur.moveToNext()) {
                         firstName = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
@@ -168,16 +168,26 @@ public class AddActivity extends AppCompatActivity {
 
                         name.setText(firstName);
                         surname.setText(family);
+
+
+
+                    // TODO(1): Get phone number from contact list and write into edittext
+                    if (Integer.parseInt(nameCur.getString(nameCur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+
+                        Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
+                        while (phoneCur.moveToNext()) {
+                            String phoneNumberCursor = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            phoneNumber.setText(phoneNumberCursor);
+                        }
+                        phoneCur.close();
+
+                        cont.close();
+
+                       }
                     }
                     nameCur.close();
-                    cont.close();
-
+                    break;
                 }
-                break;
+            }
         }
-
-
     }
-
-
-}
