@@ -29,7 +29,7 @@ public class AddActivity extends AppCompatActivity {
 
 
     static final int PICK_CONTACT = 1;
-
+    String firstName,family,display;
     EditText name, surname, phoneNumber, email;
     Spinner country_codes;
     Button add_button;
@@ -135,7 +135,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                 startActivityForResult(intent, PICK_CONTACT);
-
+                Log.e("ADDD","ASDFDSA");
             }
 
         });
@@ -145,8 +145,6 @@ public class AddActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-
         switch (reqCode) {
             case (PICK_CONTACT):
                 if (resultCode == Activity.RESULT_OK) {
@@ -164,10 +162,12 @@ public class AddActivity extends AppCompatActivity {
                     String[] whereNameParams = new String[] { ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE };
                     Cursor nameCur = getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, whereName, whereNameParams, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
                     while (nameCur.moveToNext()) {
-                        String given = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
-                        String family = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
-                        String display = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
-                        Toast.makeText(this, "Name: " + given + " Family: " +  family + " Displayname: "  + display, Toast.LENGTH_LONG).show();
+                        firstName = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+                        family = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+                        display = nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME));
+
+                        name.setText(firstName);
+                        surname.setText(family);
                     }
                     nameCur.close();
                     cont.close();
@@ -175,6 +175,8 @@ public class AddActivity extends AppCompatActivity {
                 }
                 break;
         }
+
+
     }
 
 
