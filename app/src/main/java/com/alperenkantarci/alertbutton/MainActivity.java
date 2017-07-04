@@ -43,7 +43,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     List<TrustyPerson> trustedPeople;
-    static final int PICK_CONTACT = 1;
     Button add_button;
     Button list_button;
     ImageView alarm_button;
