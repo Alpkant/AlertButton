@@ -22,6 +22,7 @@ public class AddActivity extends AppCompatActivity {
     EditText name, surname, phoneNumber, email;
     Spinner country_codes;
     Button add_button;
+    Button add_from_contacts_button;
     List<TrustyPerson> trustedPeople;
 
 
@@ -45,6 +46,7 @@ public class AddActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email_edit_text);
         country_codes = (Spinner) findViewById(R.id.country_code);
         add_button = (Button) findViewById(R.id.add_button);
+        add_from_contacts_button = (Button) findViewById(R.id.add_from_contact_button);
         trustedPeople = new ArrayList<>();
 
         /**
@@ -119,8 +121,15 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        add_from_contacts_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
     }
+
+
 
 
 }

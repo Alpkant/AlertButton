@@ -41,10 +41,9 @@ import java.util.List;
 import java.util.Locale;
 
 
-
 public class MainActivity extends AppCompatActivity {
     List<TrustyPerson> trustedPeople;
-
+    static final int PICK_CONTACT = 1;
     Button add_button;
     Button list_button;
     ImageView alarm_button;
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                                                 String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
                                                 String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
                                                 if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
-                                                    sentPI = PendingIntent.getBroadcast(MainActivity.this,0,new Intent("SMS_SENT"),0);
+                                                    sentPI = PendingIntent.getBroadcast(MainActivity.this, 0, new Intent("SMS_SENT"), 0);
                                                     smsManager.sendTextMessage(sendNumber, null, smsEditedMessage, sentPI, null);
                                                     Log.i("SMS SUCCESS", "SUCCESS");
 
@@ -203,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
         alarm_button = (ImageView) findViewById(R.id.alarm_button);
 
 
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);;
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
+        ;
         SharedPreferences.Editor editor = preferences.edit();
         Boolean runBefore = preferences.getBoolean("RunBefore", false);
         if (!runBefore) {
@@ -238,11 +238,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET , Manifest.permission.READ_CONTACTS};
+        final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET, Manifest.permission.READ_CONTACTS};
         if (!runBefore) {
 
             LayoutInflater layoutInflater = LayoutInflater.from(this);
-            final View rootView = layoutInflater.inflate(R.layout.user_password_layout,null);
+            final View rootView = layoutInflater.inflate(R.layout.user_password_layout, null);
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setView(rootView);
@@ -259,29 +259,29 @@ public class MainActivity extends AppCompatActivity {
 
             alertDialog.setCancelable(false)
                     .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    EditText username =  rootView.findViewById(R.id.usernameAlertDialog);
-                    EditText password =  rootView.findViewById(R.id.passwordAlertDialog);
-                    Username = username.getText().toString();
-                    Password = password.getText().toString();
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            EditText username = rootView.findViewById(R.id.usernameAlertDialog);
+                            EditText password = rootView.findViewById(R.id.passwordAlertDialog);
+                            Username = username.getText().toString();
+                            Password = password.getText().toString();
 
-                    SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("Email", Username);
-                    editor.putString("Password", Password);
-                    editor.commit();
+                            SharedPreferences preferences = getApplicationContext().getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("Email", Username);
+                            editor.putString("Password", Password);
+                            editor.commit();
 
-                    Log.e("USERNAME ALARM",Username);
-                    Log.e("PASSWORD ALARM",Password);
+                            Log.e("USERNAME ALARM", Username);
+                            Log.e("PASSWORD ALARM", Password);
 
-                }
-            }).setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
+                        }
+                    }).setNegativeButton("Don't send message", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dialog.cancel();
                 }
             });
 
-            AlertDialog alert =  alertDialog.create();
+            AlertDialog alert = alertDialog.create();
             alert.show();
 
         }
