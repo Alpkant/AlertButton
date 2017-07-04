@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                                 String email = preferences.getString(String.valueOf(i) + " email", "");
                                 trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
                             }
-                            String editedMessage = "I'M IN AN EMERGENCY SITUTATION. I COULD BE KIDNAPPED OR " +
+                            String editedMessage = "I'M IN AN EMERGENCY SITUTATION. " + "I COULD BE KIDNAPPED OR " +
                                     "LOST MY LAST LOCATION IS HERE \nLONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
                                     + String.valueOf(lastLocation.getLatitude()) +
                                     "\nI am in the " + lastLocation.getCountry() + ", " +
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET};
+        final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS, Manifest.permission.INTERNET , Manifest.permission.READ_CONTACTS};
         if (!runBefore) {
 
             LayoutInflater layoutInflater = LayoutInflater.from(this);
@@ -403,6 +403,30 @@ public class MainActivity extends AppCompatActivity {
                     // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.INTERNET)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+
+                    } else {
+
+                        // permission denied, boo! Disable the
+                        // functionality that depends on this permission.
+
+                    }
+                    return;
+
+                }
+
+            }
+
+            case 4: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.READ_CONTACTS)
                             == PackageManager.PERMISSION_GRANTED) {
 
 
