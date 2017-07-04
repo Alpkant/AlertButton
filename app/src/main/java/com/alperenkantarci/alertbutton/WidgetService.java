@@ -9,7 +9,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.telephony.SmsManager;
@@ -18,9 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ import java.util.concurrent.Executor;
  * Created by Alperen Kantarci on 2.07.2017.
  */
 
-public class WidgetService extends Service  {
+public class WidgetService extends Service {
     List<TrustyPerson> trustedPeople;
     FusedLocationProviderClient mFusedLocationClient;
     double longitude, latitude, time;
@@ -40,13 +37,12 @@ public class WidgetService extends Service  {
     LocationDetails lastLocation;
     String Username = "";
     String Password = "";
-    int numberOfPeople=0;
+    int numberOfPeople = 0;
     Context context;
 
 
-
     @Override
-    public int onStartCommand(Intent intent,  int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
         Executor executor = new Executor() {
             @Override
@@ -63,8 +59,8 @@ public class WidgetService extends Service  {
                 SharedPreferences preferences = context.getSharedPreferences("com.alperenkantarci.alertbutton", MODE_MULTI_PROCESS);
                 Username = preferences.getString("Email", "error@gmail.com");
                 Password = preferences.getString("Password", "error");
-                Log.e("USERNAME",Username);
-                Log.e("PASSWORD",Password);
+                Log.e("USERNAME", Username);
+                Log.e("PASSWORD", Password);
                 stopSelf();
 
                 trustedPeople = new ArrayList<TrustyPerson>();
@@ -85,7 +81,7 @@ public class WidgetService extends Service  {
                     Log.i("Latitude", String.valueOf(latitude));
                     Log.i("Time", String.valueOf(time));
                     Log.i("Speed", String.valueOf(speed));
-                   // SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    // SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     findAdress(latitude, longitude);
                     Boolean shouldSendSms = preferences.getBoolean("ShouldSendSms", true);
                     Boolean shouldSendGlobalSms = preferences.getBoolean("ShouldSendGlobalSms", true);
@@ -135,7 +131,7 @@ public class WidgetService extends Service  {
                                         String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
                                         String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
                                         if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
-                                            sentPI = PendingIntent.getBroadcast(getApplicationContext(),0,new Intent("SMS_SENT"),0);
+                                            sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent("SMS_SENT"), 0);
                                             smsManager.sendTextMessage(sendNumber, null, smsEditedMessage, sentPI, null);
                                             Log.i("SMS SUCCESS", "SUCCESS");
 
