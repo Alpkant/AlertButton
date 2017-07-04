@@ -66,7 +66,7 @@ public class WidgetService extends Service  {
                 Log.e("USERNAME",Username);
                 Log.e("PASSWORD",Password);
                 stopSelf();
-                /*
+
                 trustedPeople = new ArrayList<TrustyPerson>();
                 if (location != null) {
                     longitude = location.getLongitude();
@@ -154,7 +154,7 @@ public class WidgetService extends Service  {
                         Toast.makeText(getApplicationContext(), "Your settings disabled to send SMS so we didn't send any sms.\n" +
                                 "To change this go to the settings", Toast.LENGTH_LONG).show();
                     }
-                } */
+                }
             }
         });
 
