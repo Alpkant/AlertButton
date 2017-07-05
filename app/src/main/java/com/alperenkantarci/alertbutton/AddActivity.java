@@ -76,7 +76,7 @@ public class AddActivity extends AppCompatActivity {
             String countryCode = preferences.getString(String.valueOf(i) + " country", "");
             String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
             String email = preferences.getString(String.valueOf(i) + " email", "");
-            trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+            trustedPeople.add(new TrustyPerson(name, surname, phoneNumber, email));
         }
         editor.apply();
 
@@ -103,7 +103,6 @@ public class AddActivity extends AppCompatActivity {
                 TrustyPerson newPerson = new TrustyPerson();
                 newPerson.setName(name.getText().toString());
                 newPerson.setSurname(surname.getText().toString());
-                newPerson.setCountry_code(country_codes.getSelectedItem().toString());
                 newPerson.setTelephone_number(phoneNumber.getText().toString());
                 newPerson.setEmail(email.getText().toString());
                 trustedPeople.add(newPerson);
@@ -115,7 +114,6 @@ public class AddActivity extends AppCompatActivity {
                 int i = trustedPeople.size() - 1;
                 editor.putString(String.valueOf(i) + " name", trustedPeople.get(i).getName());
                 editor.putString(String.valueOf(i) + " surname", trustedPeople.get(i).getSurname());
-                editor.putString(String.valueOf(i) + " country", trustedPeople.get(i).getCountry_code());
                 editor.putString(String.valueOf(i) + " number", trustedPeople.get(i).getTelephone_number());
                 editor.putString(String.valueOf(i) + " email", trustedPeople.get(i).getEmail());
                 editor.apply();

@@ -1,5 +1,7 @@
 package com.alperenkantarci.alertbutton;
 
+import static com.alperenkantarci.alertbutton.R.id.country_code;
+
 /**
  * Created by Alperen Kantarci on 15.06.2017.
  */
@@ -7,14 +9,14 @@ package com.alperenkantarci.alertbutton;
 class TrustyPerson {
     private String name;
     private String surname;
-    private String country_code;
+
     private String telephone_number;
     private String email;
 
-    TrustyPerson(String name, String surname, String country_code, String telephone_number, String email) {
+    TrustyPerson(String name, String surname, String telephone_number, String email) {
         this.name = name;
         this.surname = surname;
-        this.country_code = country_code;
+
         this.telephone_number = telephone_number;
         this.email = email;
     }
@@ -37,14 +39,6 @@ class TrustyPerson {
 
     void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    String getCountry_code() {
-        return country_code;
-    }
-
-    void setCountry_code(String country_code) {
-        this.country_code = country_code;
     }
 
     String getTelephone_number() {

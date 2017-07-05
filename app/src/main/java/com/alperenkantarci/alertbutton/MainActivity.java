@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                                                 SmsManager smsManager = SmsManager.getDefault();
                                                 PendingIntent sentPI;
                                                 String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
-                                                String sendNumber = tmp[0] + "" + trustedPeople.get(i).getTelephone_number();
+                                                String sendNumber = trustedPeople.get(i).getTelephone_number();
                                                 if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
                                                     sentPI = PendingIntent.getBroadcast(MainActivity.this, 0, new Intent("SMS_SENT"), 0);
                                                     smsManager.sendTextMessage(sendNumber, null, smsEditedMessage, sentPI, null);
