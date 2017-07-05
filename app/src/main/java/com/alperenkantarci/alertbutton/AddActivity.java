@@ -31,6 +31,7 @@ public class AddActivity extends AppCompatActivity {
     Uri resultUri;
     static final int PICK_CONTACT = 1;
     String firstName, family, display;
+
     EditText name, surname, phoneNumber, email;
     Spinner country_codes;
     Button add_button;
@@ -181,6 +182,7 @@ public class AddActivity extends AppCompatActivity {
 
     private String retrieveContactNumber() {
         String contactID="";
+
         String contactNumber = null;
 
         // getting contacts ID
@@ -191,7 +193,7 @@ public class AddActivity extends AppCompatActivity {
         if (cursorID.moveToFirst()) {
 
             contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
-        }
+            }
 
         cursorID.close();
 
