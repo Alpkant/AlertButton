@@ -1,6 +1,5 @@
 package com.alperenkantarci.alertbutton;
 
-import static com.alperenkantarci.alertbutton.R.id.country_code;
 
 /**
  * Created by Alperen Kantarci on 15.06.2017.

@@ -64,8 +64,8 @@ public class ViewAdapter extends BaseAdapter {
         final TrustyPerson tmpPerson = mTrustedPeople.get(i);
 
         textView1.setText(tmpPerson.getName() + " " + tmpPerson.getSurname());
-        String[] tmp = tmpPerson.getCountry_code().split(","); //Gets only phone part
-        textView2.setText(tmp[0] + "" + tmpPerson.getTelephone_number());
+
+        textView2.setText( tmpPerson.getTelephone_number());
 
         deleteImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +82,6 @@ public class ViewAdapter extends BaseAdapter {
                 for (int i = 0; i < numberOfPeople; i++) {
                     editor.putString(String.valueOf(i) + " name", mTrustedPeople.get(i).getName());
                     editor.putString(String.valueOf(i) + " surname", mTrustedPeople.get(i).getSurname());
-                    editor.putString(String.valueOf(i) + " country", mTrustedPeople.get(i).getCountry_code());
                     editor.putString(String.valueOf(i) + " number", mTrustedPeople.get(i).getTelephone_number());
                     editor.putString(String.valueOf(i) + " email", mTrustedPeople.get(i).getEmail());
                 }

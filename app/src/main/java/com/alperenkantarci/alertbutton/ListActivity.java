@@ -50,10 +50,9 @@ public class ListActivity extends AppCompatActivity {
         for (int i = 0; i < numberOfPeople; i++) {
             String name = preferences.getString(String.valueOf(i) + " name", "");
             String surname = preferences.getString(String.valueOf(i) + " surname", "");
-            String countryCode = preferences.getString(String.valueOf(i) + " country", "");
             String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
             String email = preferences.getString(String.valueOf(i) + " email", "");
-            trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+            trustedPeople.add(new TrustyPerson(name, surname, phoneNumber, email));
         }
 
         if (trustedPeople.size() == 0)

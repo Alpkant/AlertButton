@@ -33,7 +33,6 @@ public class AddActivity extends AppCompatActivity {
     String firstName, family, display;
 
     EditText name, surname, phoneNumber, email;
-    Spinner country_codes;
     Button add_button;
     Button add_from_contacts_button;
     List<TrustyPerson> trustedPeople;
@@ -58,7 +57,6 @@ public class AddActivity extends AppCompatActivity {
         surname = (EditText) findViewById(R.id.surname_edit_text);
         phoneNumber = (EditText) findViewById(R.id.phone_edit_text);
         email = (EditText) findViewById(R.id.email_edit_text);
-        country_codes = (Spinner) findViewById(R.id.country_code);
         add_button = (Button) findViewById(R.id.add_button);
         add_from_contacts_button = (Button) findViewById(R.id.add_from_contact_button);
         trustedPeople = new ArrayList<>();
@@ -73,7 +71,6 @@ public class AddActivity extends AppCompatActivity {
         for (int i = 0; i < numberOfPeople; i++) {
             String name = preferences.getString(String.valueOf(i) + " name", "");
             String surname = preferences.getString(String.valueOf(i) + " surname", "");
-            String countryCode = preferences.getString(String.valueOf(i) + " country", "");
             String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
             String email = preferences.getString(String.valueOf(i) + " email", "");
             trustedPeople.add(new TrustyPerson(name, surname, phoneNumber, email));
@@ -83,9 +80,7 @@ public class AddActivity extends AppCompatActivity {
         /**
          * Array adapter setting.
          */
-        String[] m_Codes = getResources().getStringArray(R.array.CountryCodes);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, m_Codes);
-        country_codes.setAdapter(spinnerAdapter);
+
 
 
         add_button.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +130,6 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                 startActivityForResult(intent, PICK_CONTACT);
-                Log.e("ADDD", "ASDFDSA");
             }
 
         });

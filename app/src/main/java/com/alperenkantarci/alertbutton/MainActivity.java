@@ -125,10 +125,9 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < numberOfPeople; i++) {
                                 String name = preferences.getString(String.valueOf(i) + " name", "");
                                 String surname = preferences.getString(String.valueOf(i) + " surname", "");
-                                String countryCode = preferences.getString(String.valueOf(i) + " country", "");
                                 String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
                                 String email = preferences.getString(String.valueOf(i) + " email", "");
-                                trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+                                trustedPeople.add(new TrustyPerson(name, surname,  phoneNumber, email));
                             }
                             String editedMessage = "I'M IN AN EMERGENCY SITUTATION. " + "I COULD BE KIDNAPPED OR " +
                                     "LOST MY LAST LOCATION IS HERE \nLONGITUDE: " + String.valueOf(lastLocation.getLongitude()) + " LATITUDE: "
@@ -163,9 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
                                                 SmsManager smsManager = SmsManager.getDefault();
                                                 PendingIntent sentPI;
-                                                String tmp[] = trustedPeople.get(i).getCountry_code().split(",");
+
                                                 String sendNumber = trustedPeople.get(i).getTelephone_number();
-                                                if (trustedPeople.get(i).getCountry_code().equals(tmp[1]) || shouldSendGlobalSms) {
+                                                // TODO(2): We should find user number
+                                                if ( shouldSendGlobalSms) {
                                                     sentPI = PendingIntent.getBroadcast(MainActivity.this, 0, new Intent("SMS_SENT"), 0);
                                                     smsManager.sendTextMessage(sendNumber, null, smsEditedMessage, sentPI, null);
                                                     Log.i("SMS SUCCESS", "SUCCESS");
@@ -214,10 +214,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < numberOfPeople; i++) {
             String name = preferences.getString(String.valueOf(i) + " name", "");
             String surname = preferences.getString(String.valueOf(i) + " surname", "");
-            String countryCode = preferences.getString(String.valueOf(i) + " country", "");
             String phoneNumber = preferences.getString(String.valueOf(i) + " number", "");
             String email = preferences.getString(String.valueOf(i) + " email", "");
-            trustedPeople.add(new TrustyPerson(name, surname, countryCode, phoneNumber, email));
+            trustedPeople.add(new TrustyPerson(name, surname,  phoneNumber, email));
         }
 
 
