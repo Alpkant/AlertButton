@@ -28,7 +28,7 @@ import static android.R.attr.id;
 
 public class AddActivity extends AppCompatActivity {
 
-
+    Uri resultUri;
     static final int PICK_CONTACT = 1;
     String firstName, family, display;
     EditText name, surname, phoneNumber, email;
@@ -48,7 +48,8 @@ public class AddActivity extends AppCompatActivity {
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
-        /**
+
+        /*
          * This can produce NULLException
          */
 
@@ -148,7 +149,7 @@ public class AddActivity extends AppCompatActivity {
         switch (reqCode) {
             case (PICK_CONTACT):
                 if (resultCode == Activity.RESULT_OK) {
-                    Uri resultUri = data.getData();
+                    resultUri = data.getData();
                     Cursor cont = getContentResolver().query(resultUri, null, null, null, null);
                     if (!cont.moveToNext()) {
                         Toast.makeText(this, "Cursor contains no data", Toast.LENGTH_LONG).show();
@@ -169,25 +170,50 @@ public class AddActivity extends AppCompatActivity {
                         name.setText(firstName);
                         surname.setText(family);
 
-
-
                     // TODO(1): Get phone number from contact list and write into edittext
-                    if (Integer.parseInt(nameCur.getString(nameCur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-
-                        Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
-                        while (phoneCur.moveToNext()) {
-                            String phoneNumberCursor = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            phoneNumber.setText(phoneNumberCursor);
-                        }
-                        phoneCur.close();
-
-                        cont.close();
-
-                       }
                     }
+                    phoneNumber.setText(retrieveContactNumber());
                     nameCur.close();
                     break;
                 }
             }
         }
+
+    private String retrieveContactNumber() {
+        String contactID="";
+        String contactNumber = null;
+
+        // getting contacts ID
+        Cursor cursorID = getContentResolver().query(resultUri,
+                new String[]{ContactsContract.Contacts._ID},
+                null, null, null);
+
+        if (cursorID.moveToFirst()) {
+
+            contactID = cursorID.getString(cursorID.getColumnIndex(ContactsContract.Contacts._ID));
+        }
+
+        cursorID.close();
+
+
+
+        // Using the contact ID now we will get contact phone number
+        Cursor cursorPhone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? AND " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE + " = " +
+                        ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
+
+                new String[]{contactID},
+                null);
+
+        if (cursorPhone.moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        }
+
+        cursorPhone.close();
+
+        return contactNumber;
+    }
     }
