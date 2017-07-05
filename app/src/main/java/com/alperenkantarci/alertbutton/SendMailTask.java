@@ -8,15 +8,18 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
+
+import static com.google.android.gms.internal.zzagy.runOnUiThread;
 
 public class SendMailTask extends AsyncTask {
 
     private ProgressDialog statusDialog;
     private Activity sendMailActivity;
 
-    public SendMailTask( ) {
+    public SendMailTask() {
        // sendMailActivity = activity;
 
     }
@@ -41,6 +44,7 @@ public class SendMailTask extends AsyncTask {
             androidEmail.createEmailMessage();
            // publishProgress("Sending email....");
             androidEmail.sendEmail();
+
            // publishProgress("Email Sent.");
             Log.i("SendMailTask", "Mail Sent.");
         } catch (Exception e) {
@@ -58,6 +62,7 @@ public class SendMailTask extends AsyncTask {
 
     @Override
     public void onPostExecute(Object result) {
+
       //  statusDialog.dismiss();
     }
 

@@ -150,8 +150,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 new SendMailTask().execute(Username,
                                         Password, alici_liste, "EMERGENCY CALL PLEASE HELP ME!", editedMessage);
+                                        Toast.makeText(getApplicationContext(), "Sent mail successfully.", Toast.LENGTH_SHORT).show();
                             } catch (NullPointerException e) {
-                                Log.e("NULL", "NULL");
+                                Toast.makeText(getApplicationContext(), "Couldn't send a mail.", Toast.LENGTH_SHORT).show();
                             }
 
                             if (shouldSendSms) {
@@ -168,23 +169,26 @@ public class MainActivity extends AppCompatActivity {
                                                 if ( shouldSendGlobalSms) {
                                                     sentPI = PendingIntent.getBroadcast(MainActivity.this, 0, new Intent("SMS_SENT"), 0);
                                                     smsManager.sendTextMessage(sendNumber, null, smsEditedMessage, sentPI, null);
-                                                    Log.i("SMS SUCCESS", "SUCCESS");
+                                                    Toast.makeText(getApplicationContext(), "Sms sent successfully.", Toast.LENGTH_SHORT).show();
 
                                                 } else
                                                     Toast.makeText(MainActivity.this, "You selected to not send sms for foreign country telephones so we didn't send.", Toast.LENGTH_LONG).show();
                                             } catch (NullPointerException e) {
-                                                Log.i("SMS ERROR", "NULL");
+                                                Toast.makeText(getApplicationContext(), "Couldn't send a sms.", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     } catch (
                                             NullPointerException e) {
-                                        Log.i("NULL", "NULL");
+                                        Toast.makeText(getApplicationContext(), "Couldn't send a sms.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             } else {
                                 Toast.makeText(MainActivity.this, "Your settings disabled to send SMS so we didn't send any sms.\n" +
                                         "To change this go to the settings", Toast.LENGTH_LONG).show();
                             }
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Couldn't get your location.Neither SMS nor Email has sent.Open your gps or internet connection.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
